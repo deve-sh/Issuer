@@ -1,0 +1,18 @@
+.homepage{
+	margin: 0;
+	padding: 0;
+
+	&-front{
+		padding: 0.5rem 0;
+	}
+
+	&-second{
+		padding: 1.25rem 0;
+		background: $littledark;
+		color: $white;
+	}
+
+	.paddingcol{
+		padding: 1.25rem !important;
+	}
+}

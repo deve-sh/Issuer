@@ -1,0 +1,3 @@
+[build]
+  base="issuer-frontend/"
+  publish="issuer-frontend/build"
