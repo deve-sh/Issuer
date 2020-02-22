@@ -2,6 +2,7 @@
 const router = require("../router");
 
 const domainRoutes = require("./domainRoutes")(router);
+const userRoutes = require("./userRoutes")(router);
 
 router.get("/", (req, res) => {
 	res.send("API Connected.");
