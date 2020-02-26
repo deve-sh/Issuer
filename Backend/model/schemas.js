@@ -1,8 +1,7 @@
 const Schema = require("mongoose").Schema;
 
 module.exports = {
-	DomainSchema: new Schema({
-		domain: { type: String, required: true, unique: true },
+	InstituteSchema: new Schema({
 		departments: { type: Array, required: true, default: [] },
 		name: { type: String, required: true, unique: true }
 	}),
@@ -13,9 +12,9 @@ module.exports = {
 		phone: { type: String, required: true, unique: true },
 		department: { type: String, required: true },
 		joinedAt: { type: Number, default: new Date().getTime() },
-		domain: {
+		institute: {
 			type: Schema.Types.ObjectId,
-			ref: "IssuerDomain",
+			ref: "IssuerInstitute",
 			required: true
 		},
 		isHead: {
@@ -43,9 +42,9 @@ module.exports = {
 			required: true
 		},
 		desc: { type: String, default: "", required: true },
-		domain: {
+		institute: {
 			type: Schema.Types.ObjectId,
-			ref: "IssuerDomain",
+			ref: "IssuerInstitute",
 			required: true
 		},
 		isResolved: { type: Boolean, default: false },

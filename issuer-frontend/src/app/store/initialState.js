@@ -4,7 +4,7 @@ const initialState = {
 	isHead: false,
 	_id: "",
 	name: "",
-	doamin: ""
+	institute: ""
 };
 
 export default initialState;

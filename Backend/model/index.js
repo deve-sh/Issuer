@@ -3,7 +3,7 @@ const Schemas = require("./schemas");
 
 module.exports = {
 	User: Model("IssuerUser", Schemas.UserSchema),
-	Domain: Model("IssuerDomain", Schemas.DomainSchema),
+	Institute: Model("IssuerInstitute", Schemas.InstituteSchema),
 	Issue: Model("IssuerIssue", Schemas.IssueSchema),
 	Resolution: Model("IssuerResolution", Schemas.ResolutionSchema)
 };
