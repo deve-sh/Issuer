@@ -3,6 +3,7 @@ const apiConstants = {
 	// Sub API Routes
 	DOMAINROUTES: "/domains",
 	USERROUTES: "/users",
+	INSTITUTEROUTES: "/institutes",
 
 	// Sub-Sub API Routes
 	LOGINROUTE: "/login/",

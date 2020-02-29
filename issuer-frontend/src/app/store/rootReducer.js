@@ -10,6 +10,16 @@ const rootReducer = (state = initialState, action = { type: null }) => {
 				...state,
 				institute: action.institute ? action.institute : state.institute
 			};
+		case actions.SETINSTITUTES:
+			return {
+				...state,
+				institutes: action.institutes
+					? action.institutes
+					: state.institutes,
+				hasFetchedInstitutes: action.institutes
+					? true
+					: state.hasFetchedInstitutes
+			};
 		default:
 			return state;
 	}

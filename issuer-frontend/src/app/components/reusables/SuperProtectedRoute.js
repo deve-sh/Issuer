@@ -4,20 +4,25 @@ import { Route, Redirect } from "react-router-dom";
 import { getToken } from "../../helpers";
 
 const SuperProtectedRoute = ({ component: Component, ...rest }) => {
-  const { isAuthenticated, isAdmin, isHead } = useSelector(state => state);
+	const { isAuthenticated, isAdmin, isHead } = useSelector(state => state);
+	const institute = useSelector(state => state.institute);
 
-  return (
-    <Route
-      {...rest}
-      render={props =>
-        isAuthenticated && getToken() && (isAdmin || isHead) ? (
-          <Component {...props} />
-        ) : (
-          <Redirect to="/" />
-        )
-      }
-    />
-  );
+	return (
+		<Route
+			{...rest}
+			render={props =>
+				institute ? (
+					isAuthenticated && getToken() && (isAdmin || isHead) ? (
+						<Component {...props} />
+					) : (
+						<Redirect to="/home" />
+					)
+				) : (
+					<Redirect to={"/"} />
+				)
+			}
+		/>
+	);
 };
 
 export default SuperProtectedRoute;

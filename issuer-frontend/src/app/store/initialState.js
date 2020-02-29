@@ -4,7 +4,9 @@ const initialState = {
 	isHead: false,
 	_id: "",
 	name: "",
-	institute: ""
+	institute: null,
+	institutes: null,
+	hasFetchedInstitutes: false
 };
 
 export default initialState;

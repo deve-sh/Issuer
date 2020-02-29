@@ -14,8 +14,10 @@ import { getToken, removeToken } from "./app/helpers";
 
 import AuthenticationRoute from "./app/components/reusables/AuthenticationRoute";
 import ProtectedRoute from "./app/components/reusables/ProtectedRoute";
+import HomeRoute from "./app/components/reusables/HomeRoute";
 import SuperProtectedRoute from "./app/components/reusables/SuperProtectedRoute";
 
+import SelectInstitute from "./app/components/container/SelectInstitute";
 import Home from "./app/components/container/Home";
 import Header from "./app/components/reusables/Header";
 import Login from "./app/components/container/Authentication/login";
@@ -50,9 +52,9 @@ const App = props => {
 				isAdmin={state.isAdmin}
 			/>
 			<Switch>
-				<Route
-					exact
-					path={"/"}
+				<Route exact path={"/"} component={SelectInstitute} />
+				<HomeRoute
+					path={"/home"}
 					component={props => (
 						<Home
 							{...props}

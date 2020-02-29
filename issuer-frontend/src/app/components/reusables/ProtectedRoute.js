@@ -5,15 +5,20 @@ import { getToken } from "../../helpers";
 
 const ProtectedRoute = ({ component: Component, ...rest }) => {
   const isAuthenticated = useSelector(state => state.isAuthenticated);
+  const institute = useSelector(state => state.institute);
 
   return (
     <Route
       {...rest}
       render={props =>
-        isAuthenticated && getToken() ? (
-          <Component {...props} />
+        institute ? (
+          isAuthenticated && getToken() ? (
+            <Component {...props} />
+          ) : (
+            <Redirect to="/home" />
+          )
         ) : (
-          <Redirect to="/" />
+          <Redirect to={"/"} />
         )
       }
     />

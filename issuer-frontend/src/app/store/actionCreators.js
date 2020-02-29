@@ -6,3 +6,10 @@ export const setInstitute = (institute = "") => {
 		institute: institute ? institute : null
 	};
 };
+
+export const setInstitutes = (institutes = []) => {
+	return {
+		type: actions.SETINSTITUTES,
+		institutes: institutes ? institutes : null
+	};
+};
