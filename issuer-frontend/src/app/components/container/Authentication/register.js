@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import Image from "../../reusables/Image";
@@ -12,6 +13,7 @@ import constants from "../../../constants";
 import formsImage from "../../../files/forms.svg";
 
 const Register = props => {
+	const state = useSelector(state => state);
 	const [email, setemail] = useState("");
 	const [password, setpassword] = useState("");
 	const [name, setname] = useState("");
@@ -69,6 +71,22 @@ const Register = props => {
 							required={true}
 						/>
 						<br />
+						<label>Department</label>
+						<select className={"form-control"} required={true}>
+							{state.institute && state.institute.departments
+								? state.institute.departments.map(
+										(department, index) => (
+											<option
+												key={index}
+												value={department}
+											>
+												{department}
+											</option>
+										)
+								  )
+								: ""}
+						</select>
+						<br />
 						<div className={"buttoncontainer"}>
 							<Button
 								className={"btn btn-primary"}
@@ -76,11 +94,7 @@ const Register = props => {
 								title={"Register"}
 							/>
 							&nbsp;&nbsp;
-							<Link
-								className={"btn"}
-								title={"Register"}
-								to={"/"}
-							>
+							<Link className={"btn"} title={"Register"} to={"/"}>
 								Cancel
 							</Link>
 						</div>
