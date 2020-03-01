@@ -9,11 +9,14 @@ import { setInstitute, setInstitutes } from "../../../store/actionCreators";
 
 import { fetchInstitutes } from "../../../API/Institutes";
 
+import Loader from "../../reusables/Loader";
+
 const SelectInstitute = props => {
 	const dispatch = useDispatch();
 	const state = useSelector(state => state);
 	const { institute, isAuthenticated, hasFetchedInstitutes } = state;
 
+	const [loading, setloading] = useState(false);
 	const [ismounted, setismounted] = useState(true);
 	const [fetchedInstitutes, setfetchedInstitutes] = useState(null);
 
@@ -25,12 +28,15 @@ const SelectInstitute = props => {
 				)
 			);
 		} else if (!hasFetchedInstitutes) {
-			fetchInstitutes(err => toasts.generateError(err)).then(res => {
-				if (res && res.data && res.status === 200 && ismounted) {
-					setfetchedInstitutes(res.data);
-					dispatch(setInstitutes(res.data));
-				}
-			});
+			setloading(true);
+			fetchInstitutes(err => toasts.generateError(err))
+				.then(res => {
+					if (res && res.data && res.status === 200 && ismounted) {
+						setfetchedInstitutes(res.data);
+						dispatch(setInstitutes(res.data));
+					}
+				})
+				.then(() => setloading(false));
 		}
 
 		return () => setismounted(false);
@@ -48,7 +54,10 @@ const SelectInstitute = props => {
 			<div className={"fixedcontainer"}>
 				<div className={"label"}>Select Your Institute :</div>
 				<div className={"row institutelist"}>
-					{fetchedInstitutes && Array.isArray(fetchedInstitutes) ? (
+					{loading ? (
+						<Loader />
+					) : fetchedInstitutes &&
+					  Array.isArray(fetchedInstitutes) ? (
 						fetchedInstitutes.map((institute, index) => (
 							<div
 								className={"col-12 option"}
