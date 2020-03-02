@@ -19,7 +19,6 @@ const {
 } = require("../../helpers");
 
 const userRoutes = router => {
-	console.log(`${apiConstants.USERROUTES}${apiConstants.REGISTERROUTE}`);
 	router.post(
 		`${apiConstants.USERROUTES}${apiConstants.REGISTERROUTE}`,
 		(req, res) => {
