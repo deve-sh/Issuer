@@ -1,21 +1,33 @@
 const constants = require("../constants");
-const { User, Domain } = require("../model");
+const { User, Institute } = require("../model");
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 
 module.exports = {
-	isValidDomain: domain => constants.DOMAINS.includes(domain),
-	findDomain: (domain, callback = () => {}) => {
-		if (domain && callback) {
-			Domain.find({ domain }, (err, domains) => callback(err, domains));
-		}
-	},
 	findUsers: (email, callback = () => {}) => {
 		User.find({ email }, (err, users) => {
 			if (err) return callback(err);
 			else return callback(null, users);
 		});
+	},
+	findUsersByPhoneOrEmail: (email, phone, callback = () => {}) => {
+		if (email && phone && callback) {
+			User.find(
+				{
+					$or: [{ email }, { phone }]
+				},
+				(err, users) => callback(err, users)
+			);
+		}
+	},
+	findUsersForDepartment: (department, callback = () => {}) => {
+		if (department && callback) {
+			User.find({ department }, (err, users) => callback(err, users));
+		}
+	},
+	findInstitute: (instid, callback = () => {}) => {
+		Institute.findById(instid, (err, inst) => callback(err, inst));
 	},
 	verifyToken: (token, callback = () => {}) => {
 		let decoded;

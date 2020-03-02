@@ -25,11 +25,11 @@ module.exports = {
 			type: Boolean,
 			default: false
 		},
-		canPostComplaints: {
+		isApproved: {
 			type: Boolean,
 			default: false
 		},
-		isApproved: {
+		canPostComplaints: {
 			type: Boolean,
 			default: false
 		}

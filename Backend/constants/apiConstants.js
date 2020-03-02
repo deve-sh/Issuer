@@ -7,6 +7,7 @@ const apiConstants = {
 
 	// Sub-Sub API Routes
 	LOGINROUTE: "/login/",
+	REGISTERROUTE: "/register/",
 	ISVALIDURL: "/isvalidurl",
 	GETDEPARTMENTS: "/getdepartments"
 };

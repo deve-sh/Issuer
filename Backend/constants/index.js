@@ -8,7 +8,10 @@ const appConstants = {
 		return res.status(status).json({
 			message
 		});
-	}
+	},
+	MINPASSLENGTH: 8,
+	EMAILREG: /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
+	NAMEREG: /^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/g
 };
 
 module.exports = appConstants;
