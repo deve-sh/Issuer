@@ -125,9 +125,10 @@ const userRoutes = router => {
 	router.post(
 		`${apiConstants.USERROUTES}${apiConstants.LOGINROUTE}`,
 		(req, res) => {
-			let { email, password } = req.body;
+			let { email, password, institute } = req.body;
 
-			if (!email || !password) return INCOMPLETEDETAILS(res);
+			if (!email || !password || !institute)
+				return INCOMPLETEDETAILS(res);
 
 			// Finding the user
 
@@ -137,6 +138,9 @@ const userRoutes = router => {
 					return error(res, 404, "User Not Found.");
 
 				let user = users[0];
+
+				if (institute !== user.institute.toString())
+					return UNAUTHORISED(res);
 
 				let jwtPayload = {
 					email: user.email,
@@ -148,7 +152,12 @@ const userRoutes = router => {
 				// Encrypting the JSON Web Token.
 				let token = jwt.sign(jwtPayload, process.env.JWT_SECRET);
 
-				return res.json({ token });
+				return res.json({
+					token,
+					department: user.department,
+					name: user.name,
+					email: user.email
+				});
 			});
 		}
 	);

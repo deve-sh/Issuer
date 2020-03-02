@@ -20,6 +20,13 @@ const rootReducer = (state = initialState, action = { type: null }) => {
 					? true
 					: state.hasFetchedInstitutes
 			};
+		case actions.LOGIN:
+			return {
+				...state,
+				email: action.email,
+				name: action.name,
+				department: action.department
+			};
 		default:
 			return state;
 	}

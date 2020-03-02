@@ -1,6 +1,7 @@
 const actions = {
 	SETINSTITUTE: "SETINSTITUTE",
-	SETINSTITUTES: "SETINSTITUTES"
+	SETINSTITUTES: "SETINSTITUTES",
+	LOGIN: "LOGIN"
 };
 
 export default actions;

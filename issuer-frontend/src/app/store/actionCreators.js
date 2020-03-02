@@ -13,3 +13,12 @@ export const setInstitutes = (institutes = []) => {
 		institutes: institutes ? institutes : null
 	};
 };
+
+export const loginUser = payload => {
+	return {
+		type: actions.LOGIN,
+		name: payload.name,
+		email: payload.email,
+		department: payload.department
+	};
+};

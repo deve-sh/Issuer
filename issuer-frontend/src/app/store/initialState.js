@@ -4,8 +4,10 @@ const initialState = {
 	isHead: false,
 	_id: "",
 	name: "",
+	email: "",
 	institute: null,
 	institutes: null,
+	department: null,
 	hasFetchedInstitutes: false
 };
 
