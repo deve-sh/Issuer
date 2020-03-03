@@ -1,6 +1,7 @@
 const userConfig = {
-	USERROUTE : "/users",
-	REGISTER : "/register/"
+	USERROUTE: "/users",
+	REGISTER: "/register/",
+	LOGIN: "/login/"
 };
 
 export default userConfig;

@@ -23,9 +23,26 @@ const rootReducer = (state = initialState, action = { type: null }) => {
 		case actions.LOGIN:
 			return {
 				...state,
+				isAuthenticated: true,
 				email: action.email,
 				name: action.name,
-				department: action.department
+				department: action.department,
+				isHead: action.isHead,
+				isAdmin: action.isAdmin,
+				canPostComplaints: action.canPostComplaints,
+				isApproved: action.isApproved
+			};
+		case actions.LOGOUT:
+			return {
+				...state,
+				isApproved: false,
+				isAuthenticated: false,
+				email: "",
+				name: "",
+				department: null,
+				isAdmin: false,
+				isHead: false,
+				canPostComplaints: false
 			};
 		default:
 			return state;

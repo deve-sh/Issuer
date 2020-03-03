@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 
 import constants from "../../constants";
 
+import Button from "./Button";
 import Icon from "./Icon";
 
 const Header = props => {
@@ -43,6 +44,13 @@ const Header = props => {
 								>
 									<Icon className={"fas fa-cog"} />
 								</Link>
+								<Button
+									className={"option accessibility"}
+									title={"Logout"}
+									onClick={props.logoutFunc}
+								>
+									<Icon className={"fas fa-door-closed"} />
+								</Button>
 							</React.Fragment>
 						) : (
 							<React.Fragment>

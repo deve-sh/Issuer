@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
 import Image from "../../reusables/Image";
@@ -6,16 +7,23 @@ import Input from "../../reusables/Input";
 import Button from "../../reusables/Button";
 
 import constants from "../../../constants";
+import toasts from "../../../constants/toastConstants";
 import authConstants from "../../../constants/authConstants";
+
+import { login } from "../../../API/Users";
+import { loginUser } from "../../../store/actionCreators";
 
 // Images
 
 import identityImage from "../../../files/identity.svg";
 
 const Login = props => {
+	const dispatch = useDispatch();
+	const state = useSelector(state => state);
 	const [authMode, setauthMode] = useState(authConstants.LOGINMODE);
 	const [email, setemail] = useState("");
 	const [password, setpassword] = useState("");
+	const [loading, setloading] = useState(false);
 
 	useEffect(() => {
 		document.title = constants.APPNAME + " - Login";
@@ -31,11 +39,29 @@ const Login = props => {
 		});
 	};
 
-	const loginUser = event => {
+	const userLogin = event => {
 		event.preventDefault();
-
+		setloading(true);
 		if (authMode === authConstants.LOGINMODE) {
 			// Log user in.
+			let payLoad = {
+				email,
+				password,
+				institute: state.institute ? state.institute._id : null
+			};
+
+			login(payLoad, err => toasts.generateError(err))
+				.then(res => {
+					if (res && res.data && res.data.token) {
+						// Dispatch login for user.
+						localStorage.setItem(
+							constants.AUTHTOKEN,
+							res.data.token
+						);
+						dispatch(loginUser(res.data));
+					}
+				})
+				.then(() => setloading(false));
 		} else {
 			// Forgot Password
 		}
@@ -45,19 +71,21 @@ const Login = props => {
 		<div className={"authpage login"}>
 			<div className={"fixedcontainer row aligncenter"}>
 				<div className={"col-sm-7"}>
-					<form className={"authform"} onSubmit={loginUser}>
+					<form className={"authform"} onSubmit={userLogin}>
 						<div className={"heading extraweight"}>
 							{authMode === authConstants.LOGINMODE
 								? authConstants.LOGIN
 								: authConstants.FORGOTPASS}
 						</div>
-						<label>Email</label>
+						<label>Email or Phone</label>
 						<Input
 							className={"form-control"}
-							type={"email"}
-							placeholder={"abc@xyz.com"}
+							type={"text"}
+							value={email}
+							placeholder={"abc@xyz.com / +91-1234567890"}
 							onChange={e => setemail(e.target.value)}
 							required={true}
+							disabled={loading}
 						/>
 						{authMode === authConstants.LOGINMODE ? (
 							<React.Fragment>
@@ -66,9 +94,11 @@ const Login = props => {
 								<Input
 									className={"form-control"}
 									type={"password"}
+									value={password}
 									placeholder={"Enter Your Password"}
 									onChange={e => setpassword(e.target.value)}
 									required={true}
+									disabled={loading}
 								/>
 							</React.Fragment>
 						) : (
@@ -89,6 +119,7 @@ const Login = props => {
 										? authConstants.LOGIN
 										: authConstants.UPDATEPASS
 								}
+								disabled={loading}
 							/>
 							&nbsp;&nbsp;
 							<Link className={"btn"} title={"Cancel"} to={"/"}>

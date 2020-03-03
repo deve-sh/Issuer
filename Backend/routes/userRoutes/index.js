@@ -156,7 +156,11 @@ const userRoutes = router => {
 					token,
 					department: user.department,
 					name: user.name,
-					email: user.email
+					email: user.email,
+					canPostComplaints: user.canPostComplaints,
+					isHead: user.isHead,
+					isAdmin: user.isAdmin,
+					isApproved: user.isApproved
 				});
 			});
 		}

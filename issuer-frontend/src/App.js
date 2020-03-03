@@ -10,6 +10,9 @@ import toasts from "./app/constants/toastConstants";
 // APIs
 import { getToken, removeToken } from "./app/helpers";
 
+// Global Actions
+import { logout } from "./app/store/actionCreators";
+
 // Components
 
 import AuthenticationRoute from "./app/components/reusables/AuthenticationRoute";
@@ -42,6 +45,14 @@ const App = props => {
 	// const hasFetchedUser = useSelector(state => state.hasFetchedUser);
 
 	// Actual app.
+
+	const logoutFunc = () => {
+		if (getToken() && state.isAuthenticated) {
+			removeToken();
+			dispatch(logout());
+		}
+	};
+
 	return (
 		<React.Fragment>
 			{/* Global Toast for error messages */}
@@ -50,20 +61,11 @@ const App = props => {
 				isAuthenticated={state.isAuthenticated}
 				isHead={state.isHead}
 				isAdmin={state.isAdmin}
+				logoutFunc={logoutFunc}
 			/>
 			<Switch>
 				<Route exact path={"/"} component={SelectInstitute} />
-				<HomeRoute
-					path={"/home"}
-					component={props => (
-						<Home
-							{...props}
-							isAdmin={state.isAdmin}
-							isHead={state.isHead}
-							isAuthenticated={state.isAuthenticated}
-						/>
-					)}
-				/>
+				<HomeRoute path={"/home"} component={Home} />
 				<AuthenticationRoute path={"/login"} component={Login} />
 				<AuthenticationRoute path={"/register"} component={Register} />
 			</Switch>

@@ -135,6 +135,7 @@ const Register = props => {
 								className={"btn btn-primary"}
 								label={"Register"}
 								title={"Register"}
+								disabled={loading}
 							/>
 							&nbsp;&nbsp;
 							<Link className={"btn"} title={"Register"} to={"/"}>

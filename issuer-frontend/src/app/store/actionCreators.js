@@ -19,6 +19,16 @@ export const loginUser = payload => {
 		type: actions.LOGIN,
 		name: payload.name,
 		email: payload.email,
-		department: payload.department
+		department: payload.department,
+		isHead: payload.isHead,
+		isAdmin: payload.isAdmin,
+		canPostComplaints: payload.canPostComplaints,
+		isApproved: payload.isApproved
 	};
 };
+
+export const logout = () => {
+	return {
+		type: actions.LOGOUT
+	};
+}
