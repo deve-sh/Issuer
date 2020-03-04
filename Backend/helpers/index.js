@@ -33,6 +33,16 @@ module.exports = {
 				.exec((err, user) => callback(err, user));
 		}
 	},
+	findUnapprovedUsers: (institute, department, callback) => {
+		if (institute && department && callback) {
+			User.find({
+				$and: [{ institute }, { department }]
+			})
+				.select({ __v: 0, password: 0 })
+				.sort("-joinedAt")
+				.exec((err, users) => callback(err, users));
+		}
+	},
 	findInstitute: (instid, callback = () => {}) => {
 		Institute.findById(instid, (err, inst) => callback(err, inst));
 	},
