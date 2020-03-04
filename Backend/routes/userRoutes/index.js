@@ -18,7 +18,9 @@ const {
 	findUsers,
 	findInstitute,
 	findUsersByPhoneOrEmail,
-	findUsersForDepartment
+	findUsersForDepartment,
+	verifyToken,
+	findUserById
 } = require("../../helpers");
 
 const userRoutes = router => {
@@ -144,6 +146,7 @@ const userRoutes = router => {
 
 				let jwtPayload = {
 					email: user.email,
+					name: user.name,
 					_id: user._id,
 					institute: user.institute,
 					department: user.department
@@ -162,6 +165,37 @@ const userRoutes = router => {
 					isAdmin: user.isAdmin,
 					isApproved: user.isApproved
 				});
+			});
+		}
+	);
+
+	router.get(
+		`${apiConstants.USERROUTES}${apiConstants.MEROUTE}`,
+		(req, res) => {
+			let { authorization } = req.headers; // Auth Token
+
+			if (!authorization) return UNAUTHORISED(res);
+
+			let userid = null,
+				hasError = false;
+
+			verifyToken(authorization, (err, decoded) => {
+				if (err) hasError = true;
+				else {
+					user = { ...decoded };
+				}
+			});
+
+			if (hasError) return INVALIDTOKEN(res); // Illegal Token.
+
+			// Now fetch other details of the user.
+
+			return findUserById(user._id, (err, fetchedUser) => {
+				if (err) return INTERNALSERVERERROR(res);
+				else if (!user) return error(res, 404, "User not found.");
+
+				user = { ...fetchedUser };
+				return res.json(user);
 			});
 		}
 	);

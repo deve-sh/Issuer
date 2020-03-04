@@ -26,6 +26,13 @@ module.exports = {
 			User.find({ department }, (err, users) => callback(err, users));
 		}
 	},
+	findUserById: (userid, callback = () => {}) => {
+		if (userid && callback) {
+			User.findById(userid)
+				.select({ __v: 0 })
+				.exec((err, user) => callback(err, user));
+		}
+	},
 	findInstitute: (instid, callback = () => {}) => {
 		Institute.findById(instid, (err, inst) => callback(err, inst));
 	},
@@ -33,7 +40,13 @@ module.exports = {
 		let decoded;
 		try {
 			decoded = jwt.verify(token, process.env.JWT_SECRET);
-			if (!decoded.id || !decoded.name || !decoded.email)
+			if (
+				!decoded._id ||
+				!decoded.name ||
+				!decoded.institute ||
+				!decoded.email ||
+				!decoded.department
+			)
 				return callback(true); // Token invalid or tampered with.
 		} catch (err) {
 			return callback(err);
