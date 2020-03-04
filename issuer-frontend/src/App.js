@@ -65,7 +65,7 @@ const App = props => {
 			/>
 			<Switch>
 				<Route exact path={"/"} component={SelectInstitute} />
-				<HomeRoute path={"/home"} component={Home} />
+				<HomeRoute path={"/home"} component={(props) => <Home {...props} logoutFunc={logoutFunc} />} />
 				<AuthenticationRoute path={"/login"} component={Login} />
 				<AuthenticationRoute path={"/register"} component={Register} />
 			</Switch>

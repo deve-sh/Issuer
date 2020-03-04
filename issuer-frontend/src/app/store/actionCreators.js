@@ -31,4 +31,11 @@ export const logout = () => {
 	return {
 		type: actions.LOGOUT
 	};
-}
+};
+
+export const dispatchFetchedUser = (userdetails = {}) => {
+	return {
+		type: actions.SETFETCHEDUSER,
+		details: { ...userdetails }
+	};
+};

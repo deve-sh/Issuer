@@ -44,6 +44,12 @@ const rootReducer = (state = initialState, action = { type: null }) => {
 				isHead: false,
 				canPostComplaints: false
 			};
+		case actions.SETFETCHEDUSER:
+			return {
+				...state,
+				...action.details,
+				isAuthenticated: true
+			};
 		default:
 			return state;
 	}

@@ -29,7 +29,7 @@ module.exports = {
 	findUserById: (userid, callback = () => {}) => {
 		if (userid && callback) {
 			User.findById(userid)
-				.select({ __v: 0 })
+				.select({ __v: 0, password: 0 })
 				.exec((err, user) => callback(err, user));
 		}
 	},

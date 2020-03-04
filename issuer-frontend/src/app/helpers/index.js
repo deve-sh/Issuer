@@ -34,3 +34,7 @@ export const copyText = (domNode = null, callback = () => {}) => {
 		callback(null);
 	}
 };
+
+export const getInstitute = () => {
+	return localStorage.getItem(constants.INSTITUTE);
+};

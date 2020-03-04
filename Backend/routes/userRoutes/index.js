@@ -193,9 +193,7 @@ const userRoutes = router => {
 			return findUserById(user._id, (err, fetchedUser) => {
 				if (err) return INTERNALSERVERERROR(res);
 				else if (!user) return error(res, 404, "User not found.");
-
-				user = { ...fetchedUser };
-				return res.json(user);
+				return res.json(fetchedUser);
 			});
 		}
 	);
