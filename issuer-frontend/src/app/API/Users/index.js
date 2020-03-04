@@ -62,3 +62,20 @@ export const fetchUser = (errorCallback = () => {}) => {
 			.catch(err => errorCallback(getError(err)));
 	}
 };
+
+export const getUnapprovedUsers = (institute, department, errorCallback) => {
+	if (institute && department && errorCallback) {
+		const endpoint =
+			config.HTTPS +
+			config.BACKEND +
+			config.API +
+			userConfig.USERROUTE +
+			userConfig.UNAPPROVEDUSERS +
+			`/${institute}/${department}/`;
+
+		return axios
+			.get(endpoint, getAuthToken())
+			.then(res => res)
+			.catch(err => errorCallback(getError(err)));
+	}
+};

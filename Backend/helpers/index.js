@@ -36,7 +36,11 @@ module.exports = {
 	findUnapprovedUsers: (institute, department, callback) => {
 		if (institute && department && callback) {
 			User.find({
-				$and: [{ institute }, { department }]
+				$and: [
+					{ institute },
+					{ department },
+					{ isApproved: false, isAdmin: false, isHead: false }
+				]
 			})
 				.select({ __v: 0, password: 0 })
 				.sort("-joinedAt")
