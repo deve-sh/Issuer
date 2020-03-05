@@ -1,31 +1,49 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import { getUnapprovedUsers } from "../../../API/Users";
+import { getUnapprovedUsers, approveUser } from "../../../API/Users";
 import toasts from "../../../constants/toastConstants";
 import UsersUI from "../../presentational/Users";
 
 const Users = props => {
 	const [users, setusers] = useState([]);
 	const state = useSelector(state => state);
+	const [loading, setloading] = useState(false);
 
 	const getUsers = () => {
+		setloading(true);
 		getUnapprovedUsers(state.institute, state.department, err =>
 			toasts.generateError(err)
-		).then(res => {
-			if (res && res.data) setusers(res.data);
-		});
+		)
+			.then(res => {
+				if (res && res.data) setusers(res.data);
+			})
+			.then(() => setloading(false));
 	};
 
-	const userApprover = (userid = null, userindex = null) => {
-		if (userid) {
+	const userApprover = (userindex = null) => {
+		if (userindex >= 0 && userindex < users.length) {
+			let payload = {
+				isAdmin: users[userindex].isAdmin,
+				institute: users[userindex].institute,
+				department: users[userindex].department
+			};
+
+			approveUser(users[userindex]._id, payload, err =>
+				toasts.generateError(err)
+			).then(res => {
+				if (res && res.data && res.status === 200) {
+					toasts.generateSuccess(res.data.message);
+					getUsers(); // Fetch users again.
+				}
+			});
 		}
 	};
 
 	const setUserAdmin = (userindex, isAdmin = false) => {
 		setusers(users => {
 			let userToEdit = users[userindex];
-			userToEdit.isAdmin = isAdmin;
+			userToEdit.isAdmin = isAdmin === "true" ? true : false;
 			return [
 				...users.slice(0, userindex),
 				userToEdit,
@@ -38,7 +56,14 @@ const Users = props => {
 		getUsers();
 	}, []);
 
-	return <UsersUI users={users} userApprover={userApprover} setUserAdmin={setUserAdmin} />;
+	return (
+		<UsersUI
+			loading={loading}
+			users={users}
+			userApprover={userApprover}
+			setUserAdmin={setUserAdmin}
+		/>
+	);
 };
 
 export default Users;

@@ -12,7 +12,7 @@ const SuperProtectedRoute = ({ component: Component, ...rest }) => {
 			{...rest}
 			render={props =>
 				institute ? (
-					isAuthenticated && getToken() && (isAdmin || isHead) ? (
+					isAuthenticated && getToken() && (isHead) ? (
 						<Component {...props} />
 					) : (
 						<Redirect to="/home" />

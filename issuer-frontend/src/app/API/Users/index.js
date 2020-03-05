@@ -80,8 +80,8 @@ export const getUnapprovedUsers = (institute, department, errorCallback) => {
 	}
 };
 
-export const approveUser = (userid, errorCallback) => {
-	if (errorCallback && userid) {
+export const approveUser = (userid, payLoad, errorCallback) => {
+	if (errorCallback && userid && payLoad) {
 		const endpoint =
 			config.HTTPS +
 			config.BACKEND +
@@ -91,7 +91,7 @@ export const approveUser = (userid, errorCallback) => {
 			`/${userid}/`;
 
 		return axios
-			.patch(endpoint, getAuthToken())
+			.patch(endpoint, payLoad, getAuthToken())
 			.then(res => res)
 			.catch(err => errorCallback(getError(err)));
 	}

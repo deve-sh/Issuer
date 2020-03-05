@@ -265,6 +265,9 @@ const userRoutes = router => {
 		(req, res) => {
 			let { authorization } = req.headers;
 			let { usertoapprove } = req.params;
+			let { isAdmin, institute, department } = req.body;
+
+			if(!isAdmin) isAdmin = false;
 
 			let user = null,
 				hasError = false;
@@ -297,14 +300,15 @@ const userRoutes = router => {
 					if (
 						fetchedUser.isHead ||
 						fetchedUser.isAdmin ||
-						fetchedUser.institute !== institute ||
-						fetchedUser.department !== department
+						fetchedUser.institute.toString() !== institute ||
+						fetchedUser.department.toString() !== department
 					)
 						return error(res, 400, "Cannot approve the user.");
 					if (fetchedUser.isApproved)
 						return error(res, 400, "User Already Approved.");
 					else {
 						fetchedUser.isApproved = true;
+						fetchedUser.isAdmin = isAdmin;
 
 						return fetchedUser.save(err => {
 							if (err) return INTERNALSERVERERROR(res);
