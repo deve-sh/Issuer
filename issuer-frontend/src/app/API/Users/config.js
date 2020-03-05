@@ -3,6 +3,7 @@ const userConfig = {
 	REGISTER: "/register/",
 	LOGIN: "/login/",
 	ME: "/me/",
+	RESETPASS: "/resetpass/",
 	UNAPPROVEDUSERS: "/getunapprovedusers/"
 };
 

@@ -8,6 +8,7 @@ const apiConstants = {
 	// Sub-Sub API Routes
 	LOGINROUTE: "/login/",
 	MEROUTE: "/me/",
+	RESETPASS: "/resetpass/",
 	UNAPPROVEDUSERS: "/getunapprovedusers/",
 	APPROVEUSER: "/approveuser/",
 	REGISTERROUTE: "/register/",

@@ -1,7 +1,16 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 
 require("dotenv").config();
+
+const mailer = nodemailer.createTransport({
+	service: "gmail",
+	auth: {
+		user: process.env.MAILEMAIL,
+		pass: process.env.MAILPASS
+	}
+});
 
 const constants = require("../../constants");
 const apiConstants = require("../../constants/apiConstants");
@@ -21,7 +30,8 @@ const {
 	findUsersForDepartment,
 	verifyToken,
 	findUserById,
-	findUnapprovedUsers
+	findUnapprovedUsers,
+	generatePassword
 } = require("../../helpers");
 
 const userRoutes = router => {
@@ -300,6 +310,75 @@ const userRoutes = router => {
 							);
 						});
 					}
+				});
+			});
+		}
+	);
+
+	router.patch(
+		`${apiConstants.USERROUTES}${apiConstants.RESETPASS}`,
+		(req, res) => {
+			let { email } = req.body;
+
+			if (!email) return INCOMPLETEDETAILS(res);
+
+			return findUsersByPhoneOrEmail(email, email, (err, users) => {
+				if (err) return INTERNALSERVERERROR(res);
+				else if (!users || users.length <= 0 || users.length > 1 || !Array.isArray(users))
+					return error(res, 404, "User not found in our database.");
+
+				let user = users[0];
+
+				let oldPass = user.password,
+					newPassword = generatePassword();
+
+				let hashedPass = null;
+
+				try {
+					hashedPass = bcrypt.hashSync(newPassword, 12);
+				} catch (err) {
+					return INTERNALSERVERERROR(res);
+				}
+
+				// First saving the new password to the user.
+
+				user.password = hashedPass;
+
+				return user.save(err => {
+					if (err) return INTERNALSERVERERROR(res);
+
+					// Sending email to the registered email with the updated password.
+
+					const mailOptions = {
+						from: process.env.MAILEMAIL,
+						to: user.email,
+						subject: "Password Updated",
+						html:
+							"Updated Password is <strong>" +
+							newPassword +
+							"</strong>."
+					};
+
+					return mailer.sendMail(mailOptions, (error, info) => {
+						if (error) {
+							user.password = oldPass;
+							return user.save(err => {
+								if (err) return INTERNALSERVERERROR(res);
+								else
+									return error(
+										res,
+										500,
+										"Could not update password. Kindly Try again."
+									);
+							});
+						} else {
+							return message(
+								res,
+								200,
+								"Successfully Updated Password. Email Sent."
+							);
+						}
+					});
 				});
 			});
 		}

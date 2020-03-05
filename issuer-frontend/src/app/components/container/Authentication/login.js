@@ -10,7 +10,7 @@ import constants from "../../../constants";
 import toasts from "../../../constants/toastConstants";
 import authConstants from "../../../constants/authConstants";
 
-import { login } from "../../../API/Users";
+import { login, sendResetRequest } from "../../../API/Users";
 import { loginUser } from "../../../store/actionCreators";
 
 // Images
@@ -64,6 +64,14 @@ const Login = props => {
 				.then(() => setloading(false));
 		} else {
 			// Forgot Password
+			if (email) {
+				sendResetRequest(email, err => toasts.generateError(err)).then(
+					res => {
+						if (res && res.status === 200 && res.data)
+							toasts.generateSuccess(res.data.message);
+					}
+				).then(() => setloading(false));
+			}
 		}
 	};
 

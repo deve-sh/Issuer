@@ -66,5 +66,13 @@ module.exports = {
 			return callback(err);
 		}
 		return callback(null, decoded);
+	},
+	generatePassword: (length = 10) => {
+		let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
+			randomPass = "";
+		for(let i = 0; i < length; i++)
+			randomPass += chars[Math.floor(Math.random() * chars.length)];
+		
+		return randomPass;
 	}
 };
