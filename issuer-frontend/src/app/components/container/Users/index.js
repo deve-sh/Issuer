@@ -17,11 +17,28 @@ const Users = props => {
 		});
 	};
 
+	const userApprover = (userid = null, userindex = null) => {
+		if (userid) {
+		}
+	};
+
+	const setUserAdmin = (userindex, isAdmin = false) => {
+		setusers(users => {
+			let userToEdit = users[userindex];
+			userToEdit.isAdmin = isAdmin;
+			return [
+				...users.slice(0, userindex),
+				userToEdit,
+				...users.slice(userindex + 1)
+			];
+		});
+	};
+
 	useEffect(() => {
 		getUsers();
 	}, []);
 
-	return <UsersUI users={users} />;
+	return <UsersUI users={users} userApprover={userApprover} setUserAdmin={setUserAdmin} />;
 };
 
 export default Users;

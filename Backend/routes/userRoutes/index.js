@@ -117,6 +117,7 @@ const userRoutes = router => {
 							isHead,
 							isAdmin,
 							isApproved,
+							canPostComplaints: isAdmin || isHead ? false : true,
 							joinedAt: new Date().getTime()
 						});
 
@@ -238,8 +239,13 @@ const userRoutes = router => {
 					fetchedUser.institute.toString() !== institute ||
 					fetchedUser.department.toString() !== department ||
 					!fetchedUser.isHead
-				)
+				) {
+					console.log(
+						fetchedUser.institute.toString() !== institute,
+						fetchedUser.department.toString() !== department
+					);
 					return UNAUTHORISED(res);
+				}
 
 				return findUnapprovedUsers(
 					institute,
@@ -324,7 +330,12 @@ const userRoutes = router => {
 
 			return findUsersByPhoneOrEmail(email, email, (err, users) => {
 				if (err) return INTERNALSERVERERROR(res);
-				else if (!users || users.length <= 0 || users.length > 1 || !Array.isArray(users))
+				else if (
+					!users ||
+					users.length <= 0 ||
+					users.length > 1 ||
+					!Array.isArray(users)
+				)
 					return error(res, 404, "User not found in our database.");
 
 				let user = users[0];

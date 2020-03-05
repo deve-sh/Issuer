@@ -80,7 +80,22 @@ export const getUnapprovedUsers = (institute, department, errorCallback) => {
 	}
 };
 
-export const approveUser = (userid, errorCallback) => {};
+export const approveUser = (userid, errorCallback) => {
+	if (errorCallback && userid) {
+		const endpoint =
+			config.HTTPS +
+			config.BACKEND +
+			config.API +
+			userConfig.USERROUTE +
+			userConfig.APPROVEUSER +
+			`/${userid}/`;
+
+		return axios
+			.patch(endpoint, getAuthToken())
+			.then(res => res)
+			.catch(err => errorCallback(getError(err)));
+	}
+};
 
 export const sendResetRequest = (email, errorCallback = () => {}) => {
 	const endpoint =
