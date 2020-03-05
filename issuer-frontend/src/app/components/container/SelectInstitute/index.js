@@ -24,7 +24,7 @@ const SelectInstitute = props => {
 		if (localStorage.getItem(constants.INSTITUTE)) {
 			dispatch(
 				setInstitute(
-					JSON.parse(localStorage.getItem(constants.INSTITUTE))
+					JSON.parse(localStorage.getItem(constants.INSTITUTE))._id
 				)
 			);
 		} else if (!hasFetchedInstitutes) {

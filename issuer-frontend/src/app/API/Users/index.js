@@ -71,7 +71,7 @@ export const getUnapprovedUsers = (institute, department, errorCallback) => {
 			config.API +
 			userConfig.USERROUTE +
 			userConfig.UNAPPROVEDUSERS +
-			`/${institute}/${department}/`;
+			`${institute}/${department}/`;
 
 		return axios
 			.get(endpoint, getAuthToken())
