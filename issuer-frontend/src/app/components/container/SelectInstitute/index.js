@@ -21,6 +21,8 @@ const SelectInstitute = props => {
 	const [fetchedInstitutes, setfetchedInstitutes] = useState(null);
 
 	useEffect(() => {
+		document.title = constants.APPNAME + " - Select Institute";
+
 		if (localStorage.getItem(constants.INSTITUTE)) {
 			dispatch(
 				setInstitute(
@@ -39,7 +41,10 @@ const SelectInstitute = props => {
 				.then(() => setloading(false));
 		}
 
-		return () => setismounted(false);
+		return () => {
+			document.title = constants.APPNAME;
+			setismounted(false);
+		}
 	}, []);
 
 	const selectInstitute = institute => {

@@ -47,7 +47,7 @@ const Login = props => {
 			let payLoad = {
 				email,
 				password,
-				institute: state.institute ? state.institute._id : null
+				institute: state.institute ? state.institute : null
 			};
 
 			login(payLoad, err => toasts.generateError(err))

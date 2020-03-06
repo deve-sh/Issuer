@@ -25,6 +25,7 @@ import Home from "./app/components/container/Home";
 import Header from "./app/components/reusables/Header";
 import Login from "./app/components/container/Authentication/login";
 import Register from "./app/components/container/Authentication/register";
+import Settings from "./app/components/container/Settings";
 import Users from "./app/components/container/Users";
 
 const App = props => {
@@ -69,6 +70,7 @@ const App = props => {
 				<HomeRoute path={"/home"} component={(props) => <Home {...props} logoutFunc={logoutFunc} />} />
 				<AuthenticationRoute path={"/login"} component={Login} />
 				<AuthenticationRoute path={"/register"} component={Register} />
+				<ProtectedRoute path={"/settings"} component={Settings} />
 				<SuperProtectedRoute path={"/users"} component={Users} />
 			</Switch>
 		</React.Fragment>

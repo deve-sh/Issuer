@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 import { getUnapprovedUsers, approveUser } from "../../../API/Users";
+import constants from "../../../constants";
 import toasts from "../../../constants/toastConstants";
 import UsersUI from "../../presentational/Users";
 
@@ -53,7 +54,12 @@ const Users = props => {
 	};
 
 	useEffect(() => {
+		document.title = constants.APPNAME + " - Unapproved Users";
 		getUsers();
+
+		return () => {
+			document.title = constants.APPNAME;
+		};
 	}, []);
 
 	return (

@@ -156,7 +156,15 @@ const userRoutes = router => {
 				if (institute !== user.institute.toString())
 					return UNAUTHORISED(res);
 
+				// Checking if sent password matches the user's password.
+
+				let isValid = bcrypt.compareSync(password, user.password);
+
+				if (!isValid) return error(res, 403, "Invalid Password.");
+
+				// Validated.
 				let jwtPayload = {
+					phone: user.phone,
 					email: user.email,
 					name: user.name,
 					_id: user._id,
@@ -267,7 +275,7 @@ const userRoutes = router => {
 			let { usertoapprove } = req.params;
 			let { isAdmin, institute, department } = req.body;
 
-			if(!isAdmin) isAdmin = false;
+			if (!isAdmin) isAdmin = false;
 
 			let user = null,
 				hasError = false;
