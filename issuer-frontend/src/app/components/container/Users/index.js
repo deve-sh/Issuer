@@ -13,7 +13,7 @@ const Users = props => {
 
 	const getUsers = () => {
 		setloading(true);
-		getUnapprovedUsers(state.institute, state.department, err =>
+		getUnapprovedUsers(state.institute._id, state.department, err =>
 			toasts.generateError(err)
 		)
 			.then(res => {
