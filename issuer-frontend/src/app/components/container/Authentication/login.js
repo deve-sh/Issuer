@@ -20,6 +20,7 @@ import identityImage from "../../../files/identity.svg";
 const Login = props => {
 	const dispatch = useDispatch();
 	const state = useSelector(state => state);
+	const [ismounted, setismounted] = useState(true);
 	const [authMode, setauthMode] = useState(authConstants.LOGINMODE);
 	const [email, setemail] = useState("");
 	const [password, setpassword] = useState("");
@@ -28,7 +29,10 @@ const Login = props => {
 	useEffect(() => {
 		document.title = constants.APPNAME + " - Login";
 
-		return () => (document.title = constants.APPNAME);
+		return () => {
+			document.title = constants.APPNAME;
+			setismounted(false);
+		};
 	}, []);
 
 	const switchMode = () => {
@@ -54,23 +58,25 @@ const Login = props => {
 				.then(res => {
 					if (res && res.data && res.data.token) {
 						// Dispatch login for user.
-						localStorage.setItem(
-							constants.AUTHTOKEN,
-							res.data.token
-						);
-						dispatch(loginUser(res.data));
+						if (ismounted) {
+							localStorage.setItem(
+								constants.AUTHTOKEN,
+								res.data.token
+							);
+							dispatch(loginUser(res.data));
+						}
 					}
+					else setloading(false);
 				})
-				.then(() => setloading(false));
 		} else {
 			// Forgot Password
 			if (email) {
-				sendResetRequest(email, err => toasts.generateError(err)).then(
-					res => {
+				sendResetRequest(email, err => toasts.generateError(err))
+					.then(res => {
 						if (res && res.status === 200 && res.data)
 							toasts.generateSuccess(res.data.message);
-					}
-				).then(() => setloading(false));
+					})
+					.then(() => setloading(false));
 			}
 		}
 	};

@@ -12,7 +12,6 @@ const Users = props => {
 	const [loading, setloading] = useState(false);
 
 	const getUsers = () => {
-		console.log(state);
 		setloading(true);
 		getUnapprovedUsers(state.institute._id, state.department, err =>
 			toasts.generateError(err)
