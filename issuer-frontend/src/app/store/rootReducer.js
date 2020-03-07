@@ -1,8 +1,6 @@
 import initialState from "./initialState";
 import actions from "./actions";
 
-import { setInstitute } from "./actionCreators";
-
 const rootReducer = (state = initialState, action = { type: null }) => {
 	switch (action.type) {
 		case actions.SETINSTITUTE:
@@ -47,7 +45,13 @@ const rootReducer = (state = initialState, action = { type: null }) => {
 		case actions.SETFETCHEDUSER:
 			return {
 				...state,
-				...action.details,
+				email: action.details.email,
+				name: action.details.name,
+				department: action.details.department,
+				isHead: action.details.isHead,
+				isAdmin: action.details.isAdmin,
+				canPostComplaints: action.details.canPostComplaints,
+				isApproved: action.details.isApproved,
 				isAuthenticated: true
 			};
 		default:

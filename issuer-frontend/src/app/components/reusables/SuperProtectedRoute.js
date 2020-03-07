@@ -4,7 +4,7 @@ import { Route, Redirect } from "react-router-dom";
 import { getToken } from "../../helpers";
 
 const SuperProtectedRoute = ({ component: Component, ...rest }) => {
-	const { isAuthenticated, isAdmin, isHead } = useSelector(state => state);
+	const { isAuthenticated, isHead } = useSelector(state => state);
 	const institute = useSelector(state => state.institute);
 
 	return (

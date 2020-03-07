@@ -3,9 +3,9 @@ import { useSelector, useDispatch } from "react-redux";
 import HomeUI from "../../presentational/Home";
 
 import { fetchUser } from "../../../API/Users";
-import { dispatchFetchedUser, logout } from "../../../store/actionCreators";
+import { dispatchFetchedUser } from "../../../store/actionCreators";
 import toasts from "../../../constants/toastConstants";
-import { getToken, removeToken, getInstitute } from "../../../helpers";
+import { getToken, getInstitute } from "../../../helpers";
 
 const Home = props => {
 	const state = useSelector(state => state);
