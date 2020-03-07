@@ -103,7 +103,10 @@ const SettingsUI = props => {
 									title={settingsConstants.UPDATEPASS}
 									onClick={props.togglePassModal}
 								>
-									{settingsConstants.UPDATEPASS}
+									<React.Fragment>
+										<Icon className={"fas fa-key"} />
+										{" "}{settingsConstants.UPDATEPASS}
+									</React.Fragment>
 								</Button>
 							</div>
 						</div>
