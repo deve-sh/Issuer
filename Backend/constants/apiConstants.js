@@ -9,6 +9,7 @@ const apiConstants = {
 	LOGINROUTE: "/login/",
 	MEROUTE: "/me/",
 	RESETPASS: "/resetpass/",
+	UPDATEPASS: "/updatepass/",
 	UNAPPROVEDUSERS: "/getunapprovedusers",
 	APPROVEUSER: "/approveuser/",
 	REGISTERROUTE: "/register/",

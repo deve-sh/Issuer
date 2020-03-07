@@ -275,6 +275,8 @@ const userRoutes = router => {
 			let { usertoapprove } = req.params;
 			let { isAdmin, institute, department } = req.body;
 
+			if (!authorization) return UNAUTHORISED(res);
+
 			if (!isAdmin) isAdmin = false;
 
 			let user = null,
@@ -402,6 +404,49 @@ const userRoutes = router => {
 							);
 						}
 					});
+				});
+			});
+		}
+	);
+
+	router.patch(
+		`${apiConstants.USERROUTES}${apiConstants.UPDATEPASS}`,
+		(req, res) => {
+			let { authorization } = req.headers;
+			let { password } = req.body;
+
+			if (!authorization) return UNAUTHORISED(res);
+			else if (!password) return INCOMPLETEDETAILS(res);
+
+			let user = null,
+				hasError = false;
+
+			verifyToken(authorization, (err, decoded) => {
+				if (err) hasError = true;
+				else {
+					user = { ...decoded };
+				}
+			});
+
+			if (hasError) return INVALIDTOKEN(res);
+
+			return findUserById(user._id, (err, user) => {
+				if (err) return INTERNALSERVERERROR(res);
+				else if (!user) return error(res, 404, "User Not Found!");
+
+				let hashedPass = null;
+
+				try {
+					hashedPass = bcrypt.hashSync(password, 12);
+				} catch (err) {
+					return INTERNALSERVERERROR(res);
+				}
+
+				user.password = hashedPass;
+
+				return user.save(err => {
+					if(err) return INTERNALSERVERERROR(res);
+					return message(res, 200, "Password Updates Successfully.");
 				});
 			});
 		}
