@@ -3,6 +3,8 @@ import { useSelector } from "react-redux";
 
 import SettingsUI from "../../presentational/Settings";
 
+import { updatePassword } from "../../../API/Users";
+
 import constants from "../../../constants";
 import settingsConstants from "../../../constants/settingsConstants";
 import toasts from "../../../constants/toastConstants";
@@ -13,6 +15,7 @@ const Settings = props => {
 	const [showPassModal, setshowPassModal] = useState(false);
 	const [passToUpdate1, setpassToUpdate1] = useState("");
 	const [passToUpdate2, setpassToUpdate2] = useState("");
+	const [updating, setupdating] = useState(false);
 
 	useEffect(() => {
 		document.title = constants.APPNAME + " - Settings";
@@ -25,11 +28,25 @@ const Settings = props => {
 	const updatePass = event => {
 		event.preventDefault();
 		if (!passToUpdate1 || !passToUpdate2)
-			toasts.generateError(settingsConstants.NOPASSFILLED);
+			return toasts.generateError(settingsConstants.NOPASSFILLED);
 		else if (passToUpdate1 !== passToUpdate2)
-			toasts.generateError(settingsConstants.PASSESDONTMATCH);
+			return toasts.generateError(settingsConstants.PASSESDONTMATCH);
 
 		// Make the API Call
+		setupdating(true);
+		updatePassword(passToUpdate1, err => toasts.generateError(err))
+			.then(res => {
+				if(res && res.status === 200 && res.data){
+					toasts.generateSuccess(res.data.message);
+					setpassToUpdate1("");
+					setpassToUpdate2("");
+					setshowPassModal(false);
+					setupdating(false);
+				}
+				else{
+					setupdating(false);
+				}
+			});
 	};
 
 	return (
@@ -44,6 +61,7 @@ const Settings = props => {
 			setpassToUpdate1={setpassToUpdate1}
 			setpassToUpdate2={setpassToUpdate2}
 			updatePass={updatePass}
+			updating={updating}
 			// User Details
 			name={state.name}
 			email={state.email}

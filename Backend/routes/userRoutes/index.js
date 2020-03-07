@@ -417,7 +417,9 @@ const userRoutes = router => {
 
 			if (!authorization) return UNAUTHORISED(res);
 			else if (!password) return INCOMPLETEDETAILS(res);
-
+			else if (password.length < constants.MINPASSLENGTH)
+				return error(res, 400, "Password Too Short!");
+			
 			let user = null,
 				hasError = false;
 
@@ -445,8 +447,8 @@ const userRoutes = router => {
 				user.password = hashedPass;
 
 				return user.save(err => {
-					if(err) return INTERNALSERVERERROR(res);
-					return message(res, 200, "Password Updates Successfully.");
+					if (err) return INTERNALSERVERERROR(res);
+					return message(res, 200, "Password Updated Successfully.");
 				});
 			});
 		}

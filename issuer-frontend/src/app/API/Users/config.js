@@ -5,7 +5,8 @@ const userConfig = {
 	ME: "/me/",
 	RESETPASS: "/resetpass/",
 	UNAPPROVEDUSERS: "/getunapprovedusers/",
-	APPROVEUSER: "/approveuser/"
+	APPROVEUSER: "/approveuser/",
+	UPDATEPASS: "/updatepass/"
 };
 
 export default userConfig;

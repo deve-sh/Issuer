@@ -98,17 +98,36 @@ export const approveUser = (userid, payLoad, errorCallback) => {
 };
 
 export const sendResetRequest = (email, errorCallback = () => {}) => {
-	const endpoint =
-		config.HTTPS +
-		config.BACKEND +
-		config.API +
-		userConfig.USERROUTE +
-		userConfig.RESETPASS;
+	if (email && errorCallback) {
+		const endpoint =
+			config.HTTPS +
+			config.BACKEND +
+			config.API +
+			userConfig.USERROUTE +
+			userConfig.RESETPASS;
 
-	let body = { email };
+		let body = { email };
 
-	return axios
-		.patch(endpoint, body, getAuthToken())
-		.then(res => res)
-		.catch(err => errorCallback(getError(err)));
+		return axios
+			.patch(endpoint, body, getAuthToken())
+			.then(res => res)
+			.catch(err => errorCallback(getError(err)));
+	}
+};
+
+export const updatePassword = (password, errorCallback = () => {}) => {
+	if (password && errorCallback) {
+		const endpoint =
+			config.HTTPS +
+			config.BACKEND +
+			config.API +
+			userConfig.USERROUTE +
+			userConfig.UPDATEPASS;
+		let body = { password };
+
+		return axios
+			.patch(endpoint, body, getAuthToken())
+			.then(res => res)
+			.catch(err => errorCallback(getError(err)));
+	}
 };

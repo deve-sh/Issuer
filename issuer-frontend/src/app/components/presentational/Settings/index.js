@@ -24,6 +24,7 @@ const SettingsUI = props => {
 							value={props.passToUpdate1}
 							className={"form-control"}
 							autoFocus={true}
+							disabled={props.updating}
 							required={true}
 							onChange={e =>
 								props.setpassToUpdate1(e.target.value)
@@ -37,6 +38,7 @@ const SettingsUI = props => {
 							value={props.passToUpdate2}
 							className={"form-control"}
 							required={true}
+							disabled={props.updating}
 							onChange={e =>
 								props.setpassToUpdate2(e.target.value)
 							}
@@ -47,6 +49,7 @@ const SettingsUI = props => {
 							title={settingsConstants.UPDATEPASS}
 							label={settingsConstants.UPDATEPASS}
 							className={"btn btn-primary"}
+							disabled={props.updating}
 						/>
 						&nbsp;&nbsp;
 						<a
