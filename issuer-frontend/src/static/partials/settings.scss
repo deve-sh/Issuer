@@ -1,0 +1,62 @@
+.settingsui{
+	padding: 0.75rem;
+
+	.heading{
+		border-bottom: 0.25rem solid $cerulean;
+		display: inline-block;
+		margin: 0 0 1.75rem;
+	}
+
+	.profilesettings{
+		border: 0.1rem solid $bordergrey;
+		border-radius: 0.35rem;
+
+		.profilepicture{
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			min-height: 50vh;
+			padding: 1rem;
+			border-right: 0.1rem solid $bordergrey;
+		}
+
+		.profileoptions{
+			padding: 1rem;
+			justify-content: center;
+			display: flex;
+			flex-flow: column;
+
+			.userdetails{
+				.username{
+					font-weight: 600;
+					font-size: 1.25rem;
+					text-transform: uppercase;
+				}
+				.usermail{
+					font-weight: 500;
+					font-size: 1.075rem;
+				}
+			}
+
+			.useroptions{
+				padding: 0.75rem 0;
+			}
+		}
+	}
+}
+
+@media only screen and (max-width: 768px){
+	.settingsui{
+		.profilesettings{
+			.profilepicture{
+				min-height: 30vh;
+				border-bottom: 0.1rem solid $bordergrey;
+				border-right: 0;
+			}
+
+			.profileoptions{
+				align-items: center;
+			}
+		}
+	}
+}
