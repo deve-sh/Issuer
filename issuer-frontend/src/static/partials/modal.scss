@@ -1,0 +1,56 @@
+.modalbox {
+	&-container {
+		position: fixed;
+		background: rgba(0, 0, 0, 0.7);
+		overflow-y: auto;
+		top: 0;
+		bottom: 0;
+		right: 0;
+		left: 0;
+		display: flex;
+		align-items: center;
+		z-index: 999;
+	}
+
+	margin: 0 auto;
+	min-width: 50%;
+	max-width: 80%;
+
+	.head {
+		border-top-right-radius: 0.35rem;
+		border-top-left-radius: 0.35rem;
+		background: $zomp;
+		color: $white;
+		font-weight: 500;
+		font-size: 1.1rem;
+		padding: 0.75rem;
+		align-items: center;
+
+		.heading{
+			text-transform: none;
+			font-size: 1.125rem;
+			letter-spacing: 0;
+		}
+
+		.closebutton {
+			&container {
+				text-align: right;
+			}
+			font-size: 1.35rem;
+			cursor: pointer;
+			color: $white;
+		}
+	}
+
+	.contents {
+		background: $white;
+		border-bottom-right-radius: 0.35rem;
+		border-bottom-left-radius: 0.35rem;
+		color: $black;
+		padding: 0.75rem;
+
+		.withoutbg {
+			color: $black;
+		}
+	}
+}
