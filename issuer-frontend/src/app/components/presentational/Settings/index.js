@@ -7,6 +7,7 @@ import Button from "../../reusables/Button";
 import Icon from "../../reusables/Icon";
 import Modal from "../../reusables/Modal";
 import Input from "../../reusables/Input";
+import Ender from "../../reusables/Ender";
 
 const SettingsUI = props => {
 	return (
@@ -114,6 +115,7 @@ const SettingsUI = props => {
 							</div>
 						</div>
 					</div>
+					<Ender />
 				</div>
 			</div>
 		</React.Fragment>

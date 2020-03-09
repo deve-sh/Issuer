@@ -4,6 +4,7 @@ import Button from "../../reusables/Button";
 import Icon from "../../reusables/Icon";
 import Loader from "../../reusables/Loader";
 import NoneFound from "../../reusables/NoneFound";
+import Ender from "../../reusables/Ender";
 
 const UsersUI = props => {
 	return (
@@ -62,6 +63,7 @@ const UsersUI = props => {
 						No unapproved users found.
 					</NoneFound>
 				)}
+				<Ender />
 			</div>
 		</div>
 	);

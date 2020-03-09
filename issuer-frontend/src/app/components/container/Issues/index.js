@@ -5,6 +5,7 @@ import IssuesUI from "../../presentational/Issues";
 
 import constants from "../../../constants";
 import toasts from "../../../constants/toastConstants";
+import issuesConstants from "../../../constants/issuesConstants";
 import { getIssues } from "../../../API/Issues";
 
 const Issues = props => {
@@ -13,6 +14,7 @@ const Issues = props => {
 	const [unresIssues, setunresIssues] = useState(null);
 	const [loading, setloading] = useState(false);
 	const [isMounted, setisMounted] = useState(true);
+	const [activePane, setactivePane] = useState(issuesConstants.UNRESOLVED);
 
 	const fetchIssues = () => {
 		setloading(true);
@@ -37,6 +39,10 @@ const Issues = props => {
 		});
 	};
 
+	const switchPane = (newActivePane = issuesConstants.UNRESOLVED) => {
+		setactivePane(newActivePane);
+	};
+
 	useEffect(() => {
 		document.title = constants.APPNAME + " - Issues";
 		// Todo : Get the resolved and unresolved issues for the department for the admin.
@@ -56,6 +62,13 @@ const Issues = props => {
 			loading={loading}
 			resIssues={resIssues}
 			unresIssues={unresIssues}
+			activePane={activePane}
+			switchPane={switchPane}
+			issuesList={
+				activePane === issuesConstants.RESOLVED
+					? resIssues
+					: unresIssues
+			}
 		/>
 	);
 };

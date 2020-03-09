@@ -80,8 +80,8 @@ module.exports = {
 			callback(err, issues)
 		);
 	},
-	findIssuesByUser: (creator, isResolved = false, callback) => {
-		Issue.find({ creator, isResolved }, (err, issues) =>
+	findIssuesByUser: (creator, department, isResolved = false, callback) => {
+		Issue.find({ creator, department, isResolved }, (err, issues) =>
 			callback(err, issues)
 		);
 	}

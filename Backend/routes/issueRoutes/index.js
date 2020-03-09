@@ -61,7 +61,12 @@ module.exports = router => {
 					);
 				} else {
 					// Return the issues created by the user.
-					return findIssuesByUser(user._id, isResolved, response);
+					return findIssuesByUser(
+						user._id,
+						fetchedUser.department,
+						isResolved,
+						response
+					);
 				}
 			});
 		}
