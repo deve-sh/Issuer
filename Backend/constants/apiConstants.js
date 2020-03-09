@@ -4,6 +4,7 @@ const apiConstants = {
 	DOMAINROUTES: "/domains",
 	USERROUTES: "/users",
 	INSTITUTEROUTES: "/institutes",
+	ISSUEROUTES: "/issues",
 
 	// Sub-Sub API Routes
 	LOGINROUTE: "/login/",
@@ -14,7 +15,9 @@ const apiConstants = {
 	APPROVEUSER: "/approveuser/",
 	REGISTERROUTE: "/register/",
 	ISVALIDURL: "/isvalidurl",
-	GETDEPARTMENTS: "/getdepartments"
+	GETDEPARTMENTS: "/getdepartments",
+	GETISSUES: "/getissues",
+	GETRESOLVEDISSUES: "/getresolvedissues"
 };
 
 module.exports = apiConstants;

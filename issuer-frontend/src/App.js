@@ -27,6 +27,7 @@ import Login from "./app/components/container/Authentication/login";
 import Register from "./app/components/container/Authentication/register";
 import Settings from "./app/components/container/Settings";
 import Users from "./app/components/container/Users";
+import Issues from "./app/components/container/Issues";
 
 const App = props => {
 	const dispatch = useDispatch();
@@ -72,6 +73,7 @@ const App = props => {
 				<AuthenticationRoute path={"/register"} component={Register} />
 				<ProtectedRoute path={"/settings"} component={Settings} />
 				<SuperProtectedRoute path={"/users"} component={Users} />
+				<ProtectedRoute path={"/issues"} component={Issues} />
 			</Switch>
 		</React.Fragment>
 	);

@@ -1,5 +1,5 @@
 const constants = require("../constants");
-const { User, Institute } = require("../model");
+const { User, Institute, Issue } = require("../model");
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -70,9 +70,14 @@ module.exports = {
 	generatePassword: (length = 10) => {
 		let chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
 			randomPass = "";
-		for(let i = 0; i < length; i++)
+		for (let i = 0; i < length; i++)
 			randomPass += chars[Math.floor(Math.random() * chars.length)];
-		
+
 		return randomPass;
+	},
+	findIssuesByDepartment: (department, isResolved = false, callback) => {
+		Issue.find({ department, isResolved }, (err, issues) =>
+			callback(err, issues)
+		);
 	}
 };
