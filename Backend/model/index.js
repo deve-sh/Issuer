@@ -6,5 +6,5 @@ module.exports = {
 	Institute: Model("IssuerInstitute", Schemas.InstituteSchema),
 	Issue: Model("IssuerIssue", Schemas.IssueSchema),
 	Resolution: Model("IssuerResolution", Schemas.ResolutionSchema),
-	Category: Modal("IssuerCategory", Schemas.CategorySchema)
+	Category: Model("IssuerCategory", Schemas.CategorySchema)
 };
