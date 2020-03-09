@@ -16,7 +16,7 @@ const SettingsUI = props => {
 					heading={settingsConstants.UPDATEPASS}
 					toggleModal={props.togglePassModal}
 				>
-					<form onSubmit={props.updatePass} className={"contents"}>
+					<form onSubmit={props.updatePass}>
 						<Input
 							type={"password"}
 							placeholder={settingsConstants.PASSPLACEHOLDER1}

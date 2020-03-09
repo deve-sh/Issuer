@@ -34,6 +34,14 @@ module.exports = {
 			default: false
 		}
 	}),
+	CategorySchema: new Schema({
+		name: { type: String, required: true, default: "Others" },
+		institute: {
+			type: Schema.Types.ObjectId,
+			ref: "IssuerInstitute",
+			required: true
+		}
+	}),
 	IssueSchema: new Schema({
 		name: { type: String, required: true },
 		creator: {

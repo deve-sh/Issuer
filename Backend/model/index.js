@@ -5,5 +5,6 @@ module.exports = {
 	User: Model("IssuerUser", Schemas.UserSchema),
 	Institute: Model("IssuerInstitute", Schemas.InstituteSchema),
 	Issue: Model("IssuerIssue", Schemas.IssueSchema),
-	Resolution: Model("IssuerResolution", Schemas.ResolutionSchema)
+	Resolution: Model("IssuerResolution", Schemas.ResolutionSchema),
+	Category: Modal("IssuerCategory", Schemas.CategorySchema)
 };
