@@ -79,5 +79,10 @@ module.exports = {
 		Issue.find({ department, isResolved }, (err, issues) =>
 			callback(err, issues)
 		);
+	},
+	findIssuesByUser: (creator, isResolved = false, callback) => {
+		Issue.find({ creator, isResolved }, (err, issues) =>
+			callback(err, issues)
+		);
 	}
 };

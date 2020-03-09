@@ -5,7 +5,7 @@ import IssuesUI from "../../presentational/Issues";
 
 import constants from "../../../constants";
 import toasts from "../../../constants/toastConstants";
-import { getResIssues, getUnResIssues } from "../../../API/Issues";
+import { getIssues } from "../../../API/Issues";
 
 const Issues = props => {
 	const state = useSelector(state => state);
@@ -16,29 +16,25 @@ const Issues = props => {
 
 	const fetchIssues = () => {
 		setloading(true);
-		if (state.isAdmin && state.isApproved && isMounted) {
-			getResIssues(err => toasts.generateError(err)).then(res => {
-				if (res && res.data && res.status === 200 && isMounted) {
-					setresIssues(res.data);
+		getIssues(true, err => toasts.generateError(err)).then(res => {
+			if (res && res.data && res.status === 200 && isMounted) {
+				setresIssues(res.data);
 
-					if (isMounted) {
-						getUnResIssues(err => toasts.generateError(err))
-							.then(res => {
-								if (
-									res &&
-									res.data &&
-									res.status === 200 &&
-									isMounted
-								)
-									setunresIssues(res.data);
-							})
-							.then(() => (isMounted ? setloading(false) : null));
-					}
+				if (isMounted) {
+					getIssues(false, err => toasts.generateError(err))
+						.then(res => {
+							if (
+								res &&
+								res.data &&
+								res.status === 200 &&
+								isMounted
+							)
+								setunresIssues(res.data);
+						})
+						.then(() => (isMounted ? setloading(false) : null));
 				}
-			});
-		} else if (state.isApproved && isMounted) {
-			// User is just a regular user.
-		}
+			}
+		});
 	};
 
 	useEffect(() => {

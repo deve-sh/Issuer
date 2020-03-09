@@ -5,30 +5,16 @@ import issueConfig from "./config";
 
 import { getError, getAuthToken } from "../helpers";
 
-export const getResIssues = errorCallback => {
+export const getIssues = (isResolved = false, errorCallback) => {
 	const endpoint =
 		config.HTTPS +
 		config.BACKEND +
 		config.API +
 		issueConfig.ISSUEROUTE +
-		issueConfig.GETRESISSUES;
+		issueConfig.GETISSUES;
 
 	return axios
-		.get(endpoint, getAuthToken())
-		.then(res => res)
-		.catch(err => errorCallback(getError(err)));
-};
-
-export const getUnResIssues = errorCallback => {
-	const endpoint =
-		config.HTTPS +
-		config.BACKEND +
-		config.API +
-		issueConfig.ISSUEROUTE +
-		issueConfig.GETUNRESISSUES;
-
-	return axios
-		.get(endpoint, getAuthToken())
+		.post(endpoint, { isResolved }, getAuthToken())
 		.then(res => res)
 		.catch(err => errorCallback(getError(err)));
 };

@@ -1,7 +1,6 @@
 const issueConfig = {
 	ISSUEROUTE: "/issues",
-	GETUNRESISSUES: "/getissues/",
-	GETRESISSUES: "/getresolvedissues/",
+	GETISSUES: "/getissues/",
 };
 
 export default issueConfig;

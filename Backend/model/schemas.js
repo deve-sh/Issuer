@@ -57,7 +57,12 @@ module.exports = {
 		},
 		isResolved: { type: Boolean, default: false },
 		createdOn: { type: Number, default: new Date().getTime() },
-		department: { type: String, required: true }
+		department: { type: String, required: true },
+		category: {
+			type: Schema.Types.ObjectId,
+			ref: "IssuerCategory",
+			required: true
+		}
 	}),
 	ResolutionSchema: new Schema({
 		resolution: { type: String, required: true },

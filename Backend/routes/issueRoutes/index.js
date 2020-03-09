@@ -13,16 +13,19 @@ const {
 const {
 	verifyToken,
 	findUserById,
-	findIssuesByDepartment
+	findIssuesByDepartment,
+	findIssuesByUser
 } = require("../../helpers");
 
 module.exports = router => {
-	router.get(
+	router.post(
 		`${apiConstants.ISSUEROUTES}${apiConstants.GETISSUES}/`,
 		(req, res) => {
 			let { authorization } = req.headers;
+			let { isResolved } = req.body;
 
 			if (!authorization) return UNAUTHORISED(res);
+			if (!isResolved) isResolved = false;
 
 			let user = null,
 				hasError = false;
@@ -40,61 +43,26 @@ module.exports = router => {
 
 			return findUserById(user._id, (err, fetchedUser) => {
 				if (err) return INTERNALSERVERERROR(res);
-				else if (!fetchedUser) return error(res, 404, "User not found.");
-				else if (!fetchedUser.isApproved || !fetchedUser.isAdmin) return UNAUTHORISED(res);
+				else if (!fetchedUser)
+					return error(res, 404, "User not found.");
+				else if (!fetchedUser.isApproved) return UNAUTHORISED(res);
 
 				// User found, find issues pertaining to the department of the user.
-				// Finding Unresolved issues.
-				return findIssuesByDepartment(
-					fetchedUser.department,
-					false,
-					(err, issues) => {
-						if (err || !issues) return INTERNALSERVERERROR(res);
+				const response = (err, issues) => {
+					if (err || !issues) return INTERNALSERVERERROR(res);
+					return res.json(issues);
+				};
 
-						return res.json(issues);
-					}
-				);
-			});
-		}
-	);
-
-	router.get(
-		`${apiConstants.ISSUEROUTES}${apiConstants.GETRESOLVEDISSUES}/`,
-		(req, res) => {
-			let { authorization } = req.headers;
-
-			if (!authorization) return UNAUTHORISED(res);
-
-			let user = null,
-				hasError = false;
-
-			verifyToken(authorization, (err, decoded) => {
-				if (err) hasError = true;
-				else {
-					user = { ...decoded };
+				if (user.isAdmin || user.isHead) {
+					return findIssuesByDepartment(
+						fetchedUser.department,
+						isResolved,
+						response
+					);
+				} else {
+					// Return the issues created by the user.
+					return findIssuesByUser(user._id, isResolved, response);
 				}
-			});
-
-			if (hasError) return INVALIDTOKEN(res); // Illegal Token.
-
-			// Now fetch other details of the user.
-
-			return findUserById(user._id, (err, fetchedUser) => {
-				if (err) return INTERNALSERVERERROR(res);
-				else if (!fetchedUser) return error(res, 404, "User not found.");
-				else if (!fetchedUser.isAdmin || !fetchedUser.isApproved) return UNAUTHORISED(res);
-
-				// User found, find issues pertaining to the department of the user.
-				// Finding Resolved issues.
-				return findIssuesByDepartment(
-					fetchedUser.department,
-					true,
-					(err, issues) => {
-						if (err || !issues) return INTERNALSERVERERROR(res);
-
-						return res.json(issues);
-					}
-				);
 			});
 		}
 	);
