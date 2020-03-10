@@ -73,15 +73,86 @@ module.exports = router => {
 		}
 	);
 
-	router.post(`${apiConstants.ISSUEROUTES}${apiConstants.GETCATEGORIES}`, (req, res) => {
-		let { department, institute } = req.body;
+	router.post(
+		`${apiConstants.ISSUEROUTES}${apiConstants.GETCATEGORIES}`,
+		(req, res) => {
+			let { department, institute } = req.body;
 
-		if (!department || !institute) return INCOMPLETEDETAILS(res);
+			if (!department || !institute) return INCOMPLETEDETAILS(res);
 
-		return findCategories(department, institute, (err, categories) => {
-			if(err || !categories) return INTERNALSERVERERROR(res);
+			return findCategories(department, institute, (err, categories) => {
+				if (err || !categories) return INTERNALSERVERERROR(res);
 
-			res.json(categories);
-		});
-	});
+				res.json(categories);
+			});
+		}
+	);
+
+	router.post(
+		`${apiConstants.ISSUEROUTES}${apiConstants.ADDCATEGORY}`,
+		(req, res) => {
+			let { authorization } = req.headers;
+			let { categoryName, department, institute } = req.body;
+
+			if (!authorization) return UNAUTHORISED(res);
+			else if (!categoryName || !department || !institute)
+				return INTERNALSERVERERROR(res);
+
+			let user = null,
+				hasError = false;
+
+			verifyToken(authorization, (err, decoded) => {
+				if (err) hasError = true;
+				else {
+					user = { ...decoded };
+				}
+			});
+
+			if (hasError) return INVALIDTOKEN(res); // Illegal Token.
+
+			return findUserById(user._id, (err, fetchedUser) => {
+				if (err) return INTERNALSERVERERROR(res);
+				else if (!fetchedUser)
+					return error(res, 404, "User not found.");
+				else if (
+					!fetchedUser.isApproved ||
+					(!fetchedUser.isAdmin && !fetchedUser.isHead)
+				)
+					return UNAUTHORISED(res);
+
+				return findCategories(
+					department,
+					institute,
+					(err, categories) => {
+						let isAlreadyThere = false;
+
+						for (let category of categories) {
+							if (category.name === categoryName) {
+								isAlreadyThere = true;
+								break;
+							}
+						}
+
+						if (isAlreadyThere)
+							return error(
+								res,
+								400,
+								"Category with the same name is already present!"
+							);
+
+						let newCategory = new Category({
+							name: categoryName,
+							institute,
+							department
+						});
+
+						return newCategory.save(err => {
+							if (err) return INTERNALSERVERERROR(res);
+							return res.json(newCategory);
+						});
+					}
+				);
+			});
+		}
+	);
 };

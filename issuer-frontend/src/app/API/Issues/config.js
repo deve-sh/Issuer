@@ -1,7 +1,8 @@
 const issueConfig = {
 	ISSUEROUTE: "/issues",
 	GETISSUES: "/getissues/",
-	GETCATEGORIES: "/getcategories/"
+	GETCATEGORIES: "/getcategories/",
+	ADDCATEGORY: "/addcategory/"
 };
 
 export default issueConfig;

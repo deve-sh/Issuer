@@ -32,3 +32,22 @@ export const getCategories = (department, institute, errorCallback) => {
 		.then(res => res)
 		.catch(err => errorCallback(getError(err)));
 };
+
+export const addCategory = (
+	categoryName,
+	department,
+	institute,
+	errorCallback
+) => {
+	const endpoint =
+		config.HTTPS +
+		config.BACKEND +
+		config.API +
+		issueConfig.ISSUEROUTE +
+		issueConfig.ADDCATEGORY;
+
+	return axios
+		.post(endpoint, { categoryName, department, institute }, getAuthToken())
+		.then(res => res)
+		.catch(err => errorCallback(getError(err)));
+};

@@ -40,6 +40,10 @@ module.exports = {
 			type: Schema.Types.ObjectId,
 			ref: "IssuerInstitute",
 			required: true
+		},
+		department: {
+			type: String,
+			required: true
 		}
 	}),
 	IssueSchema: new Schema({
