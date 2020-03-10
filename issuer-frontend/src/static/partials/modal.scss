@@ -16,6 +16,10 @@
 	min-width: 50%;
 	max-width: 80%;
 
+	&.lengthymodal{
+		min-width: 75%;
+	}
+
 	.head {
 		border-top-right-radius: 0.35rem;
 		border-top-left-radius: 0.35rem;
@@ -28,8 +32,11 @@
 
 		.heading{
 			text-transform: none;
-			font-size: 1.125rem;
+			font-size: 1.175rem;
 			letter-spacing: 0;
+			border: 0;
+			margin: 0;
+			padding: 0;
 		}
 
 		.closebutton {

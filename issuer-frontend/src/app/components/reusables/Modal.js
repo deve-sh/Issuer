@@ -21,8 +21,11 @@ const Modal = props => {
   }, []);
 
   return (
-    <div className={"modalbox-container"}>
-      <div className={"modalbox"} ref={modalRef}>
+    <div className={`modalbox-container`}>
+      <div
+        className={`modalbox ${props.className ? props.className : ""}`}
+        ref={modalRef}
+      >
         <div className={"head row"}>
           <div className={"heading col-9"}>{props.heading}</div>
           <div className={"col-3 closebuttoncontainer"}>

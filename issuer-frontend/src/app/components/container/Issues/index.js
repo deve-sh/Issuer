@@ -12,13 +12,22 @@ const Issues = props => {
 	const state = useSelector(state => state);
 	const [resIssues, setresIssues] = useState(null);
 	const [unresIssues, setunresIssues] = useState(null);
+	const [categories, setcategories] = useState([]);
 	const [loading, setloading] = useState(false);
 	const [isMounted, setisMounted] = useState(true);
 	const [activePane, setactivePane] = useState(issuesConstants.UNRESOLVED);
+	const [showIssueModal, setshowIssueModal] = useState(false);
+	const [issueName, setissueName] = useState("");
+	const [issueDesc, setissueDesc] = useState("");
+	const [issueCategory, setissueCategory] = useState(0);
+	const [otherReason, setotherReason] = useState("");
 
 	const fetchIssues = () => {
 		setloading(true);
-		getIssues(true, err => toasts.generateError(err)).then(res => {
+		getIssues(true, err => {
+			toasts.generateError(err);
+			setloading(false);
+		}).then(res => {
 			if (res && res.data && res.status === 200 && isMounted) {
 				setresIssues(res.data);
 
@@ -43,6 +52,12 @@ const Issues = props => {
 		setactivePane(newActivePane);
 	};
 
+	const toggleIssueModal = () => setshowIssueModal(show => !show);
+
+	const issueCreator = e => {
+		e.preventDefault();
+	};
+
 	useEffect(() => {
 		document.title = constants.APPNAME + " - Issues";
 		// Todo : Get the resolved and unresolved issues for the department for the admin.
@@ -58,6 +73,7 @@ const Issues = props => {
 	return (
 		<IssuesUI
 			isAdmin={state.isAdmin}
+			isHead={state.isHead}
 			isApproved={state.isApproved}
 			loading={loading}
 			resIssues={resIssues}
@@ -69,6 +85,19 @@ const Issues = props => {
 					? resIssues
 					: unresIssues
 			}
+			// Issue Creation
+			showIssueModal={showIssueModal}
+			toggleIssueModal={toggleIssueModal}
+			issueCreator={issueCreator}
+			issueName={issueName}
+			setissueName={setissueName}
+			issueDesc={issueDesc}
+			setissueDesc={setissueDesc}
+			issueCategory={issueCategory}
+			setissueCategory={setissueCategory}
+			categories={categories}
+			otherReason={otherReason}
+			setotherReason={setotherReason}
 		/>
 	);
 };
