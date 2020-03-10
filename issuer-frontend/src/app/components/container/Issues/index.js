@@ -6,7 +6,7 @@ import IssuesUI from "../../presentational/Issues";
 import constants from "../../../constants";
 import toasts from "../../../constants/toastConstants";
 import issuesConstants from "../../../constants/issuesConstants";
-import { getIssues, getCategories } from "../../../API/Issues";
+import { getIssues, getCategories, addCategory } from "../../../API/Issues";
 
 const Issues = props => {
 	const state = useSelector(state => state);
@@ -22,6 +22,9 @@ const Issues = props => {
 	const [issueCategory, setissueCategory] = useState(0);
 	const [otherReason, setotherReason] = useState("");
 	const [activeCategory, setactiveCategory] = useState(0);
+	const [showCategoryModal, setshowCategoryModal] = useState(false);
+	const [categoryName, setcategoryName] = useState("");
+	const [working, setworking] = useState(false);
 
 	const fetchIssues = () => {
 		setloading(true);
@@ -72,9 +75,41 @@ const Issues = props => {
 	};
 
 	const toggleIssueModal = () => setshowIssueModal(show => !show);
+	const toggleCategoryModal = () => setshowCategoryModal(show => !show);
 
 	const issueCreator = e => {
 		e.preventDefault();
+	};
+
+	const categoryCreator = e => {
+		e.preventDefault();
+
+		if (!categoryName)
+			return toasts.generateError(issuesConstants.NOCATEGORYNAME);
+
+		setworking(true);
+		addCategory(
+			categoryName,
+			state.department,
+			state.institute._id,
+			err => {
+				toasts.generateError(err);
+				setworking(false);
+			}
+		)
+			.then(res => {
+				if (res && res.data && res.status === 201) {
+					toasts.generateSuccess(issuesConstants.CREATEDCATEGORY);
+					setcategories(categ => {
+						categ.push(res.data);
+						return categ;
+					});
+					setcategoryName("");
+					setshowCategoryModal(false);
+					setactiveCategory(0);
+				}
+			})
+			.then(() => setworking(false));
 	};
 
 	useEffect(() => {
@@ -150,6 +185,14 @@ const Issues = props => {
 			setotherReason={setotherReason}
 			activeCategory={activeCategory}
 			setactiveCategory={setactiveCategory}
+			// Category Creation
+			categoryCreator={categoryCreator}
+			showCategoryModal={showCategoryModal}
+			toggleCategoryModal={toggleCategoryModal}
+			categoryName={categoryName}
+			setcategoryName={setcategoryName}
+			// Misc
+			working={working}
 		/>
 	);
 };

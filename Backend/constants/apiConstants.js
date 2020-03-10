@@ -18,7 +18,8 @@ const apiConstants = {
 	GETDEPARTMENTS: "/getdepartments",
 	GETISSUES: "/getissues",
 	GETCATEGORIES: "/getcategories",
-	GETRESOLVEDISSUES: "/getresolvedissues"
+	GETRESOLVEDISSUES: "/getresolvedissues",
+	ADDCATEGORY: "/addcategory"
 };
 
 module.exports = apiConstants;

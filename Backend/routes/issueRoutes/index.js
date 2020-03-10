@@ -3,6 +3,9 @@ const apiConstants = require("../../constants/apiConstants");
 const instituteConstants = require("../../constants/instituteConstants");
 const issueConstants = require("../../constants/issueConstants");
 const { message } = require("../../constants");
+
+const { Institute, Category } = require("../../model");
+
 const {
 	error,
 	INTERNALSERVERERROR,
@@ -148,7 +151,7 @@ module.exports = router => {
 
 						return newCategory.save(err => {
 							if (err) return INTERNALSERVERERROR(res);
-							return res.json(newCategory);
+							return res.status(201).json(newCategory);
 						});
 					}
 				);

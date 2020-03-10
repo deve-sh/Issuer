@@ -87,9 +87,12 @@
 
 	&-categoryselector{
 		align-items: center;
+		border: 0.1rem solid $bordergrey;
+		border-radius: 0.25rem;
+		margin-top: 0.25rem;
 
-		.col-sm-4{
-			padding: 0.65rem 0;
+		.column{
+			padding: 0.65rem;
 		}
 	}
 

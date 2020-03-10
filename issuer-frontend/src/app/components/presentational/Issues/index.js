@@ -26,6 +26,7 @@ const IssuesUI = props => {
 						<label>{issuesConstants.ISSUENAME}</label>
 						<Input
 							className={"form-control"}
+							required={true}
 							value={props.issueName}
 							placeholder={issuesConstants.ISSUENAMEPH}
 							onChange={e => props.setissueName(e.target.value)}
@@ -35,6 +36,7 @@ const IssuesUI = props => {
 						<textarea
 							className={"form-control issues-textarea"}
 							value={props.issueDesc}
+							required={true}
 							onChange={e => props.setissueDesc(e.target.value)}
 							placeholder={issuesConstants.ISSUEDESCPH}
 						/>
@@ -43,6 +45,7 @@ const IssuesUI = props => {
 						<br />
 						<select
 							className={"form-control"}
+							required={true}
 							value={props.issueCategory}
 							onChange={e =>
 								props.setissueCategory(e.target.value)
@@ -94,6 +97,50 @@ const IssuesUI = props => {
 			) : (
 				""
 			)}
+			{props.showCategoryModal &&
+			(props.isAdmin || props.isHead) &&
+			props.isApproved ? (
+				<Modal
+					heading={issuesConstants.ADDCATEGORY}
+					toggleModal={props.toggleCategoryModal}
+				>
+					<form onSubmit={props.categoryCreator}>
+						<Input
+							type={"text"}
+							placeholder={issuesConstants.CATEGORYNAME}
+							required={true}
+							value={props.categoryName}
+							onChange={e =>
+								props.setcategoryName(e.target.value)
+							}
+							className={"form-control"}
+							disabled={props.working}
+						/>
+						<br />
+						<Button
+							className={"btn btn-success"}
+							label={"Submit"}
+							title={issuesConstants.ADDCATEGORY}
+							type={"submit"}
+							disabled={props.working}
+						/>
+						&nbsp;&nbsp;
+						<a
+							href={"#"}
+							className={"btn accessibility"}
+							disabled={props.working}
+							onClick={e => {
+								e.preventDefault();
+								props.toggleCategoryModal();
+							}}
+						>
+							Cancel
+						</a>
+					</form>
+				</Modal>
+			) : (
+				""
+			)}
 			<div className={"fixedcontainer"}>
 				{!props.isAdmin && !props.isHead && props.isApproved ? (
 					<Button
@@ -133,8 +180,10 @@ const IssuesUI = props => {
 							</div>
 						</div>
 						<div className={"issues-categoryselector row"}>
-							<div className={"col-sm-4"}>{issuesConstants.FILTER} : </div>
-							<div className={"col-sm-8"}>
+							<div className={"column col-sm-3"}>
+								{issuesConstants.FILTER} :{" "}
+							</div>
+							<div className={"column col-sm-6"}>
 								<select
 									className={"form-control"}
 									value={props.activeCategory}
@@ -157,6 +206,27 @@ const IssuesUI = props => {
 									</option>
 								</select>
 							</div>
+							{props.isAdmin &&
+							props.isApproved &&
+							props.isHead ? (
+								<div
+									className={
+										"column col-sm-3 buttoncontainer"
+									}
+								>
+									<Button
+										className={"btn btn-info"}
+										title={issuesConstants.ADDCATEGORY}
+										onClick={props.toggleCategoryModal}
+									>
+										<Icon className={"fas fa-plus"} />
+										&nbsp;
+										{issuesConstants.ADDCATEGORY}
+									</Button>
+								</div>
+							) : (
+								""
+							)}
 						</div>
 						<br />
 						{props.issuesList && props.issuesList.length > 0 ? (

@@ -14,7 +14,11 @@ const issuesConstants = {
 	ISSUECATEGORY: "Issue Category",
 	OTHERREASON: "Other Reason",
 	OTHERREASONPH: "Enter another reason",
-	FILTER: "Filter By Category"
+	FILTER: "Filter By Category",
+	ADDCATEGORY: "Add Category",
+	NOCATEGORYNAME: "No Category Name",
+	CATEGORYNAME: "Category Name",
+	CREATEDCATEGORY: "Created Category Successfully."
 };
 
 export default issuesConstants;
