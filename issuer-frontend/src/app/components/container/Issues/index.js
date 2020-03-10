@@ -6,7 +6,7 @@ import IssuesUI from "../../presentational/Issues";
 import constants from "../../../constants";
 import toasts from "../../../constants/toastConstants";
 import issuesConstants from "../../../constants/issuesConstants";
-import { getIssues } from "../../../API/Issues";
+import { getIssues, getCategories } from "../../../API/Issues";
 
 const Issues = props => {
 	const state = useSelector(state => state);
@@ -32,17 +32,35 @@ const Issues = props => {
 				setresIssues(res.data);
 
 				if (isMounted) {
-					getIssues(false, err => toasts.generateError(err))
-						.then(res => {
-							if (
-								res &&
-								res.data &&
-								res.status === 200 &&
-								isMounted
+					getIssues(false, err => {
+						toasts.generateError(err);
+						setloading(false);
+					}).then(res => {
+						if (
+							res &&
+							res.data &&
+							res.status === 200 &&
+							isMounted
+						) {
+							setunresIssues(res.data);
+
+							getCategories(
+								state.department,
+								state.institute._id,
+								err => {
+									toasts.generateError(err);
+									setloading(false);
+								}
 							)
-								setunresIssues(res.data);
-						})
-						.then(() => (isMounted ? setloading(false) : null));
+								.then(res => {
+									if(res && res.data && res.status === 200)
+										setcategories(res.data);
+								})
+								.then(() =>
+									isMounted ? setloading(false) : null
+								);
+						}
+					});
 				}
 			}
 		});

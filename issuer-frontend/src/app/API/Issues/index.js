@@ -18,3 +18,17 @@ export const getIssues = (isResolved = false, errorCallback) => {
 		.then(res => res)
 		.catch(err => errorCallback(getError(err)));
 };
+
+export const getCategories = (department, institute, errorCallback) => {
+	const endpoint =
+		config.HTTPS +
+		config.BACKEND +
+		config.API +
+		issueConfig.ISSUEROUTE +
+		issueConfig.GETCATEGORIES;
+
+	return axios
+		.post(endpoint, { department, institute })
+		.then(res => res)
+		.catch(err => errorCallback(getError(err)));
+};

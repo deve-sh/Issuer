@@ -1,5 +1,5 @@
 const constants = require("../constants");
-const { User, Institute, Issue } = require("../model");
+const { User, Institute, Issue, Category } = require("../model");
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -83,6 +83,11 @@ module.exports = {
 	findIssuesByUser: (creator, department, isResolved = false, callback) => {
 		Issue.find({ creator, department, isResolved }, (err, issues) =>
 			callback(err, issues)
+		);
+	},
+	findCategories: (department, institute, callback) => {
+		Category.find({ department, institute }, (err, categories) =>
+			callback(err, categories)
 		);
 	}
 };

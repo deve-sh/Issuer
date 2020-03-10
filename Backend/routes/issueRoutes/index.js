@@ -14,7 +14,8 @@ const {
 	verifyToken,
 	findUserById,
 	findIssuesByDepartment,
-	findIssuesByUser
+	findIssuesByUser,
+	findCategories
 } = require("../../helpers");
 
 module.exports = router => {
@@ -71,4 +72,16 @@ module.exports = router => {
 			});
 		}
 	);
+
+	router.post(`${apiConstants.ISSUEROUTES}${apiConstants.GETCATEGORIES}`, (req, res) => {
+		let { department, institute } = req.body;
+
+		if (!department || !institute) return INCOMPLETEDETAILS(res);
+
+		return findCategories(department, institute, (err, categories) => {
+			if(err || !categories) return INTERNALSERVERERROR(res);
+
+			res.json(categories);
+		});
+	});
 };

@@ -17,6 +17,7 @@ const apiConstants = {
 	ISVALIDURL: "/isvalidurl",
 	GETDEPARTMENTS: "/getdepartments",
 	GETISSUES: "/getissues",
+	GETCATEGORIES: "/getcategories",
 	GETRESOLVEDISSUES: "/getresolvedissues"
 };
 
