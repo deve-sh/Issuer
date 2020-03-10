@@ -85,6 +85,16 @@
 		}
 	}
 
+	&-categoryselector{
+		align-items: center;
+		max-width: 85%;
+		margin: 0 auto;
+
+		.col-sm-4{
+			padding: 0.65rem 0;
+		}
+	}
+
 	&-toggler{
 		background: $indigo;
 		color: $white;

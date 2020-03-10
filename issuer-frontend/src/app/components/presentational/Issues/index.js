@@ -132,6 +132,32 @@ const IssuesUI = props => {
 								{issuesConstants.RESOLVED}
 							</div>
 						</div>
+						<div className={"issues-categoryselector row"}>
+							<div className={"col-sm-4"}>{issuesConstants.FILTER} : </div>
+							<div className={"col-sm-8"}>
+								<select
+									className={"form-control"}
+									value={props.activeCategory}
+									onChange={e =>
+										props.setactiveCategory(e.target.value)
+									}
+								>
+									<option value={0}>All</option>
+									{props.categories
+										? props.categories.map(
+												(category, index) => (
+													<option value={index + 1}>
+														{category.name}
+													</option>
+												)
+										  )
+										: ""}
+									<option value={props.categories.length + 1}>
+										Others
+									</option>
+								</select>
+							</div>
+						</div>
 						<br />
 						{props.issuesList && props.issuesList.length > 0 ? (
 							props.issuesList.map((issue, index) => {

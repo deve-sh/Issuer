@@ -99,7 +99,7 @@ const Issues = props => {
 				activePane === issuesConstants.UNRESOLVED
 					? unresIssues
 					: resIssues;
-		} else if (activeCategory === categories.length) {
+		} else if (activeCategory === categories.length + 1) {
 			// Issues belonging to others.
 			filteredIssues =
 				activePane === issuesConstants.UNRESOLVED
@@ -149,6 +149,7 @@ const Issues = props => {
 			otherReason={otherReason}
 			setotherReason={setotherReason}
 			activeCategory={activeCategory}
+			setactiveCategory={setactiveCategory}
 		/>
 	);
 };

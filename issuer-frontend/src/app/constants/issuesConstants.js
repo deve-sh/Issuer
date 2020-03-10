@@ -13,7 +13,8 @@ const issuesConstants = {
 	ISSUEDESCPH: "More Details",
 	ISSUECATEGORY: "Issue Category",
 	OTHERREASON: "Other Reason",
-	OTHERREASONPH: "Enter another reason"
+	OTHERREASONPH: "Enter another reason",
+	FILTER: "Filter By Category"
 };
 
 export default issuesConstants;
