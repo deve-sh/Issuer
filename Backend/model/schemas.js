@@ -59,10 +59,11 @@ module.exports = {
 		createdOn: { type: Number, default: new Date().getTime() },
 		department: { type: String, required: true },
 		category: {
-			type: Schema.Types.ObjectId,
-			ref: "IssuerCategory",
-			required: true
-		}
+			type: String,
+			required: true,
+			default: "Others"
+		},
+		extraDetails: { type: String, default: "" }
 	}),
 	ResolutionSchema: new Schema({
 		resolution: { type: String, required: true },

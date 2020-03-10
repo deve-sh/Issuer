@@ -21,6 +21,7 @@ const Issues = props => {
 	const [issueDesc, setissueDesc] = useState("");
 	const [issueCategory, setissueCategory] = useState(0);
 	const [otherReason, setotherReason] = useState("");
+	const [activeCategory, setactiveCategory] = useState(0);
 
 	const fetchIssues = () => {
 		setloading(true);
@@ -53,7 +54,7 @@ const Issues = props => {
 								}
 							)
 								.then(res => {
-									if(res && res.data && res.status === 200)
+									if (res && res.data && res.status === 200)
 										setcategories(res.data);
 								})
 								.then(() =>
@@ -88,6 +89,41 @@ const Issues = props => {
 		};
 	}, []);
 
+	const sortByCategory = activeCategory => {
+		// Function to return a filter of activeCategory
+		let filteredIssues = [];
+
+		if (activeCategory === 0) {
+			// Issues belonging to all categories.
+			filteredIssues =
+				activePane === issuesConstants.UNRESOLVED
+					? unresIssues
+					: resIssues;
+		} else if (activeCategory === categories.length) {
+			// Issues belonging to others.
+			filteredIssues =
+				activePane === issuesConstants.UNRESOLVED
+					? unresIssues.filter(issue => issue.category === "Others")
+					: resIssues.filter(issue => issue.category === "Others");
+		} else {
+			// Issues belonging to a certain category.
+			filteredIssues =
+				activePane === issuesConstants.UNRESOLVED
+					? unresIssues.filter(
+							issue =>
+								issue.category ===
+								categories[activeCategory].name
+					  )
+					: resIssues.filter(
+							issue =>
+								issue.category ===
+								categories[activeCategory].name
+					  );
+		}
+
+		return filteredIssues;
+	};
+
 	return (
 		<IssuesUI
 			isAdmin={state.isAdmin}
@@ -98,11 +134,7 @@ const Issues = props => {
 			unresIssues={unresIssues}
 			activePane={activePane}
 			switchPane={switchPane}
-			issuesList={
-				activePane === issuesConstants.RESOLVED
-					? resIssues
-					: unresIssues
-			}
+			issuesList={sortByCategory(activeCategory)}
 			// Issue Creation
 			showIssueModal={showIssueModal}
 			toggleIssueModal={toggleIssueModal}
@@ -116,6 +148,7 @@ const Issues = props => {
 			categories={categories}
 			otherReason={otherReason}
 			setotherReason={setotherReason}
+			activeCategory={activeCategory}
 		/>
 	);
 };
