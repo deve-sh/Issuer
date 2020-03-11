@@ -52,7 +52,7 @@ const IssuesUI = props => {
 							}
 						>
 							{props.categories.map((category, index) => (
-								<option value={index}>{category.name}</option>
+								<option value={index} key={index}>{category.name}</option>
 							))}
 							<option value={props.categories.length}>
 								Others
@@ -195,7 +195,7 @@ const IssuesUI = props => {
 									{props.categories
 										? props.categories.map(
 												(category, index) => (
-													<option value={index + 1}>
+													<option key={index} value={index + 1}>
 														{category.name}
 													</option>
 												)

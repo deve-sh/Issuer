@@ -18,7 +18,9 @@ const issuesConstants = {
 	ADDCATEGORY: "Add Category",
 	NOCATEGORYNAME: "No Category Name",
 	CATEGORYNAME: "Category Name",
-	CREATEDCATEGORY: "Created Category Successfully."
+	CREATEDCATEGORY: "Created Category Successfully.",
+	CREATEDISSUE: "Created Issue Successfully",
+	INVALIDINPUTS: "Empty Inputs"
 };
 
 export default issuesConstants;

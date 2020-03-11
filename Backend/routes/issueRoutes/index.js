@@ -4,7 +4,7 @@ const instituteConstants = require("../../constants/instituteConstants");
 const issueConstants = require("../../constants/issueConstants");
 const { message } = require("../../constants");
 
-const { Institute, Category } = require("../../model");
+const { Issue, Category } = require("../../model");
 
 const {
 	error,
@@ -157,5 +157,81 @@ module.exports = router => {
 				);
 			});
 		}
+	);
+
+	router.post(
+		`${apiConstants.ISSUEROUTES}${apiConstants.CREATEISSUE}`,
+		(req, res) => {
+			let { authorization } = req.headers;
+			let {
+				institute,
+				department,
+				issueName,
+				issueDesc,
+				issueCategory,
+				extraDetails
+			} = req.body;
+
+			if (!authorization) return UNAUTHORISED(res);
+			else if (
+				!institute ||
+				!department ||
+				!issueName ||
+				!issueDesc ||
+				!issueCategory
+			)
+				return INCOMPLETEDETAILS(res);
+
+			if (!extraDetails) extraDetails = "";
+
+			let user = null,
+				hasError = false;
+
+			verifyToken(authorization, (err, decoded) => {
+				if (err) hasError = true;
+				else {
+					user = { ...decoded };
+				}
+			});
+
+			if (hasError) return INVALIDTOKEN(res); // Illegal Token.
+
+			return findUserById(user._id, (err, fetchedUser) => {
+				if (err) return INTERNALSERVERERROR(res);
+				else if (!fetchedUser)
+					return error(res, 404, "User not found.");
+				else if (
+					!fetchedUser.isApproved ||
+					fetchedUser.isAdmin ||
+					fetchedUser.isHead ||
+					fetchedUser.institute.toString() !== institute ||
+					fetchedUser.department.toString() !== department ||
+					!fetchedUser.canPostComplaints
+				)
+					return UNAUTHORISED(res); // An admin or head can't create an issue.
+
+				let newIssue = new Issue({
+					name: issueName,
+					desc: issueDesc,
+					creator: user._id,
+					isResolved: false,
+					createdOn: new Date().getTime(),
+					department,
+					institute,
+					extraDetails,
+					category: issueCategory
+				});
+
+				return newIssue.save(err => {
+					if (err) return INTERNALSERVERERROR(res);
+					else res.status(201).json(newIssue);
+				});
+			});
+		}
+	);
+
+	router.patch(
+		`${apiConstants.ISSUEROUTES}${apiConstants.UPDATEISSUE}`,
+		(req, res) => {}
 	);
 };

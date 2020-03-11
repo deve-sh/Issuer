@@ -51,3 +51,31 @@ export const addCategory = (
 		.then(res => res)
 		.catch(err => errorCallback(getError(err)));
 };
+
+export const createIssue = (payLoad, errorCallback) => {
+	const endpoint =
+		config.HTTPS +
+		config.BACKEND +
+		config.API +
+		issueConfig.ISSUEROUTE +
+		issueConfig.CREATEISSUE;
+
+	return axios
+		.post(endpoint, payLoad, getAuthToken())
+		.then(res => res)
+		.catch(err => errorCallback(getError(err)));
+};
+
+export const updateIssue = (payLoad, errorCallback) => {
+	const endpoint =
+		config.HTTPS +
+		config.BACKEND +
+		config.API +
+		issueConfig.ISSUEROUTE +
+		issueConfig.UPDATEISSUE;
+
+	return axios
+		.patch(endpoint, payLoad, getAuthToken())
+		.then(res => res)
+		.catch(err => errorCallback(getError(err)));
+};

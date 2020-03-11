@@ -6,7 +6,12 @@ import IssuesUI from "../../presentational/Issues";
 import constants from "../../../constants";
 import toasts from "../../../constants/toastConstants";
 import issuesConstants from "../../../constants/issuesConstants";
-import { getIssues, getCategories, addCategory } from "../../../API/Issues";
+import {
+	getIssues,
+	getCategories,
+	addCategory,
+	createIssue
+} from "../../../API/Issues";
 
 const Issues = props => {
 	const state = useSelector(state => state);
@@ -79,6 +84,37 @@ const Issues = props => {
 
 	const issueCreator = e => {
 		e.preventDefault();
+
+		if (!issueName || !issueDesc)
+			return toasts.generateError(issuesConstants.INVALIDINPUTS);
+
+		let payLoad = {
+			issueName,
+			issueDesc,
+			issueCategory:
+				issueCategory >= categories.length || issueCategory < 0
+					? "Others"
+					: categories[issueCategory].name,
+			institute: state.institute._id,
+			department: state.department
+		};
+
+		setworking(true);
+		createIssue(payLoad, err => {
+			toasts.generateError(err);
+			setworking(false);
+		})
+			.then(res => {
+				if (res && res.data && res.status === 201) {
+					setissueName("");
+					setissueDesc("");
+					setissueCategory(0);
+					setshowIssueModal(false);
+					fetchIssues(); // Refetch issues.
+					toasts.generateSuccess(issuesConstants.CREATEDISSUE);
+				}
+			})
+			.then(() => setworking(false));
 	};
 
 	const categoryCreator = e => {
