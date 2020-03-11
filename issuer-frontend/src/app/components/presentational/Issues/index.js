@@ -52,13 +52,15 @@ const IssuesUI = props => {
 							}
 						>
 							{props.categories.map((category, index) => (
-								<option value={index} key={index}>{category.name}</option>
+								<option value={index} key={index}>
+									{category.name}
+								</option>
 							))}
 							<option value={props.categories.length}>
 								Others
 							</option>
 						</select>
-						{props.issueCategory === props.categories.length ? (
+						{props.issueCategory >= props.categories.length ? (
 							<React.Fragment>
 								<br />
 								<label>{issuesConstants.OTHERREASON}</label>
@@ -195,7 +197,10 @@ const IssuesUI = props => {
 									{props.categories
 										? props.categories.map(
 												(category, index) => (
-													<option key={index} value={index + 1}>
+													<option
+														key={index}
+														value={index + 1}
+													>
 														{category.name}
 													</option>
 												)
@@ -230,11 +235,38 @@ const IssuesUI = props => {
 						</div>
 						<br />
 						{props.issuesList && props.issuesList.length > 0 ? (
-							props.issuesList.map((issue, index) => {
-								"";
-							})
+							props.issuesList.map((issue, index) => (
+								<div className={"issue row"} key={index}>
+									<div className={`issue-info`}>
+										<Button
+											className={
+												"accessibility issue-info-heading"
+											}
+											label={issue.name}
+										/>
+										<div className={"issue-info-desc"}>
+											{issue.desc.length > 100
+												? issue.desc.slice(0, 99) +
+												  " ..."
+												: issue.desc}
+										</div>
+										<div className={"issue-info-createdat"}>
+											<Icon className={"fas fa-clock"} />
+											&nbsp;&nbsp;
+											{new Date(
+												issue.createdOn
+											).toDateString() +
+												" - " +
+												new Date(
+													issue.createdOn
+												).toLocaleTimeString()}
+										</div>
+									</div>
+									<div className={`issue-info-options`}></div>
+								</div>
+							))
 						) : (
-							<NoneFound>{`No ${props.activePane} found.`}</NoneFound>
+							<NoneFound>{`No ${props.activePane} belonging to the category found.`}</NoneFound>
 						)}
 					</React.Fragment>
 				)}

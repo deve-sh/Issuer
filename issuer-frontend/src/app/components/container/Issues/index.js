@@ -85,7 +85,11 @@ const Issues = props => {
 	const issueCreator = e => {
 		e.preventDefault();
 
-		if (!issueName || !issueDesc)
+		if (
+			!issueName ||
+			!issueDesc ||
+			(issueCategory >= categories.length && !otherReason)
+		)
 			return toasts.generateError(issuesConstants.INVALIDINPUTS);
 
 		let payLoad = {
@@ -96,7 +100,8 @@ const Issues = props => {
 					? "Others"
 					: categories[issueCategory].name,
 			institute: state.institute._id,
-			department: state.department
+			department: state.department,
+			extraDetails: otherReason
 		};
 
 		setworking(true);
@@ -164,13 +169,13 @@ const Issues = props => {
 		// Function to return a filter of activeCategory
 		let filteredIssues = [];
 
-		if (activeCategory === 0) {
+		if (Number(activeCategory) === 0) {
 			// Issues belonging to all categories.
 			filteredIssues =
 				activePane === issuesConstants.UNRESOLVED
 					? unresIssues
 					: resIssues;
-		} else if (activeCategory === categories.length + 1) {
+		} else if (Number(activeCategory) >= categories.length + 1) {
 			// Issues belonging to others.
 			filteredIssues =
 				activePane === issuesConstants.UNRESOLVED
@@ -183,12 +188,12 @@ const Issues = props => {
 					? unresIssues.filter(
 							issue =>
 								issue.category ===
-								categories[activeCategory].name
+								categories[Number(activeCategory) - 1].name
 					  )
 					: resIssues.filter(
 							issue =>
 								issue.category ===
-								categories[activeCategory].name
+								categories[Number(activeCategory) - 1].name
 					  );
 		}
 
