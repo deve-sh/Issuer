@@ -20,7 +20,8 @@ const issuesConstants = {
 	CATEGORYNAME: "Category Name",
 	CREATEDCATEGORY: "Created Category Successfully.",
 	CREATEDISSUE: "Created Issue Successfully",
-	INVALIDINPUTS: "Empty Inputs"
+	INVALIDINPUTS: "Empty Inputs",
+	SURETODELETE: "Are you sure you want to delete this issue?"
 };
 
 export default issuesConstants;

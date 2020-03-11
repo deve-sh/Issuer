@@ -30,6 +30,8 @@ const Issues = props => {
 	const [showCategoryModal, setshowCategoryModal] = useState(false);
 	const [categoryName, setcategoryName] = useState("");
 	const [working, setworking] = useState(false);
+	const [showIssueEditor, setshowIssueEditor] = useState(false);
+	const [issueToEdit, setissueToEdit] = useState(null);
 
 	const fetchIssues = () => {
 		setloading(true);
@@ -81,6 +83,10 @@ const Issues = props => {
 
 	const toggleIssueModal = () => setshowIssueModal(show => !show);
 	const toggleCategoryModal = () => setshowCategoryModal(show => !show);
+	const toggleIssueEditor = (index) => {
+		setshowIssueEditor(show => !show);
+		setissueToEdit(sortByCategory(activeCategory)[index]);
+	}
 
 	const issueCreator = e => {
 		e.preventDefault();
@@ -200,6 +206,12 @@ const Issues = props => {
 		return filteredIssues;
 	};
 
+	const deleteIssue = (index) => {
+		if(window.confirm(issuesConstants.SURETODELETE)){
+			
+		}
+	}
+
 	return (
 		<IssuesUI
 			isAdmin={state.isAdmin}
@@ -234,6 +246,9 @@ const Issues = props => {
 			setcategoryName={setcategoryName}
 			// Misc
 			working={working}
+			deleteIssue={deleteIssue}
+			// Editing Issue
+			toggleIssueEditor={toggleIssueEditor}
 		/>
 	);
 };

@@ -237,7 +237,7 @@ const IssuesUI = props => {
 						{props.issuesList && props.issuesList.length > 0 ? (
 							props.issuesList.map((issue, index) => (
 								<div className={"issue row"} key={index}>
-									<div className={`issue-info`}>
+									<div className={`issue-info col-10`}>
 										<Button
 											className={
 												"accessibility issue-info-heading"
@@ -262,7 +262,37 @@ const IssuesUI = props => {
 												).toLocaleTimeString()}
 										</div>
 									</div>
-									<div className={`issue-info-options`}></div>
+									<div className={`issue-info-options col-2`}>
+										{props.isApproved &&
+										(!props.isAdmin || !props.isHead) ? (
+											<React.Fragment>
+												<Button
+													className={"accessibility"}
+													title={"Edit Issue"}
+													onClick={() => props.toggleIssueEditor(index)}
+												>
+													<Icon
+														className={
+															"fas fa-pencil-alt fa-lg"
+														}
+													/>
+												</Button>
+												&nbsp;&nbsp;
+											</React.Fragment>
+										) : (
+											""
+										)}
+										<Button
+											className={"accessibility"}
+											onClick={() =>
+												props.deleteIssue(index)
+											}
+										>
+											<Icon
+												className={"fas fa-trash fa-lg"}
+											/>
+										</Button>
+									</div>
 								</div>
 							))
 						) : (
