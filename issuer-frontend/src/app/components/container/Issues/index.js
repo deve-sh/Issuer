@@ -10,7 +10,8 @@ import {
 	getIssues,
 	getCategories,
 	addCategory,
-	createIssue
+	createIssue,
+	issueDeleter
 } from "../../../API/Issues";
 
 const Issues = props => {
@@ -83,10 +84,10 @@ const Issues = props => {
 
 	const toggleIssueModal = () => setshowIssueModal(show => !show);
 	const toggleCategoryModal = () => setshowCategoryModal(show => !show);
-	const toggleIssueEditor = (index) => {
+	const toggleIssueEditor = index => {
 		setshowIssueEditor(show => !show);
 		setissueToEdit(sortByCategory(activeCategory)[index]);
-	}
+	};
 
 	const issueCreator = e => {
 		e.preventDefault();
@@ -206,11 +207,18 @@ const Issues = props => {
 		return filteredIssues;
 	};
 
-	const deleteIssue = (index) => {
-		if(window.confirm(issuesConstants.SURETODELETE)){
-			
+	const deleteIssue = index => {
+		if (window.confirm(issuesConstants.SURETODELETE)) {
+			issueDeleter(sortByCategory(activeCategory)[index]._id, err =>
+				toasts.generateError(err)
+			).then(res => {
+				if (res && res.data && res.status === 200) {
+					toasts.generateSuccess(res.data.message);
+					fetchIssues(); // Refetch issues.
+				}
+			});
 		}
-	}
+	};
 
 	return (
 		<IssuesUI

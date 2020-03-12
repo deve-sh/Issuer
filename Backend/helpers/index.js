@@ -76,18 +76,21 @@ module.exports = {
 		return randomPass;
 	},
 	findIssuesByDepartment: (department, isResolved = false, callback) => {
-		Issue.find({ department, isResolved }, (err, issues) =>
-			callback(err, issues)
-		);
+		Issue.find({ department, isResolved })
+			.sort("-createdOn")
+			.exec((err, issues) => callback(err, issues));
 	},
 	findIssuesByUser: (creator, department, isResolved = false, callback) => {
-		Issue.find({ creator, department, isResolved }, (err, issues) =>
-			callback(err, issues)
-		);
+		Issue.find({ creator, department, isResolved })
+			.sort("-createdOn")
+			.exec((err, issues) => callback(err, issues));
 	},
 	findCategories: (department, institute, callback) => {
 		Category.find({ department, institute }, (err, categories) =>
 			callback(err, categories)
 		);
+	},
+	findIssueById: (issueId, callback) => {
+		Issue.findById(issueId, (err, issue) => callback(err, issue));
 	}
 };

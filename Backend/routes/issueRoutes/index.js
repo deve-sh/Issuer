@@ -18,7 +18,8 @@ const {
 	findUserById,
 	findIssuesByDepartment,
 	findIssuesByUser,
-	findCategories
+	findCategories,
+	findIssueById
 } = require("../../helpers");
 
 module.exports = router => {
@@ -57,7 +58,7 @@ module.exports = router => {
 					return res.json(issues);
 				};
 
-				if (user.isAdmin || user.isHead) {
+				if (fetchedUser.isAdmin || fetchedUser.isHead) {
 					return findIssuesByDepartment(
 						fetchedUser.department,
 						isResolved,
@@ -231,7 +232,86 @@ module.exports = router => {
 	);
 
 	router.patch(
-		`${apiConstants.ISSUEROUTES}${apiConstants.UPDATEISSUE}`,
-		(req, res) => {}
+		`${apiConstants.ISSUEROUTES}${apiConstants.UPDATEISSUE}/:issueId/`,
+		(req, res) => {
+			let { authorization } = req.headers;
+			let { issueId } = req.params;
+			let { newName, newDesc, newCategory } = req.headers;
+
+			if (!authorization) return UNAUTHORISED(res);
+			else if (!newName && !newDesc && !newCategory)
+				return INCOMPLETEDETAILS(res);
+
+			let user = null,
+				hasError = false;
+
+			verifyToken(authorization, (err, decoded) => {
+				if (err) hasError = true;
+				else {
+					user = { ...decoded };
+				}
+			});
+
+			if (hasError) return INVALIDTOKEN(res); // Illegal Token.
+
+			return findIssueById(issueId, (err, issue) => {});
+		}
+	);
+
+	router.delete(
+		`${apiConstants.ISSUEROUTES}${apiConstants.DELETEISSUE}/:issueId/`,
+		(req, res) => {
+			let { authorization } = req.headers;
+			let { issueId } = req.params;
+
+			if (!authorization) return UNAUTHORISED(res);
+
+			let user = null,
+				hasError = false;
+
+			verifyToken(authorization, (err, decoded) => {
+				if (err) hasError = true;
+				else user = { ...decoded };
+			});
+
+			if (hasError) return INVALIDTOKEN(res); // Illegal Token.
+
+			return findIssueById(issueId, (err, issue) => {
+				if (err) return INTERNALSERVERERROR(res);
+				else if (!issue) return error(res, 404, "Issue Not Found!");
+
+				if (user._id !== issue.creator.toString()) {
+					// Checking if the user is an admin or head or not.
+					return findUserById(user._id, (err, fetchedUser) => {
+						if (err) return INTERNALSERVERERROR(res);
+						else if (!fetchedUser)
+							return error(res, 404, "User not found!");
+
+						if (!fetchedUser.isAdmin && !fetchedUser.isHead)
+							return UNAUTHORISED(res);
+
+						return Issue.deleteOne({ _id: issueId }, err => {
+							if (err) return INTERNALSERVERERROR(res);
+							else
+								return message(
+									res,
+									200,
+									"Deleted Issue Successfully."
+								);
+						});
+					});
+				} else {
+					return Issue.deleteOne({ _id: issueId }, err => {
+						if (err) return INTERNALSERVERERROR(res);
+						else
+							return message(
+								res,
+								200,
+								"Deleted Issue Successfully."
+							);
+					});
+				}
+			});
+		}
 	);
 };

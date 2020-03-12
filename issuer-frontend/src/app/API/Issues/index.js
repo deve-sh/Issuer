@@ -79,3 +79,19 @@ export const updateIssue = (payLoad, errorCallback) => {
 		.then(res => res)
 		.catch(err => errorCallback(getError(err)));
 };
+
+export const issueDeleter = (issueId, errorCallback) => {
+	const endpoint =
+		config.HTTPS +
+		config.BACKEND +
+		config.API +
+		issueConfig.ISSUEROUTE +
+		issueConfig.DELETEISSUE +
+		issueId +
+		"/";
+
+	return axios
+		.delete(endpoint, getAuthToken())
+		.then(res => res)
+		.catch(err => errorCallback(getError(err)));
+};
