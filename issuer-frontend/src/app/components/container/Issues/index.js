@@ -11,7 +11,8 @@ import {
 	getCategories,
 	addCategory,
 	createIssue,
-	issueDeleter
+	issueDeleter,
+	issueUpdater
 } from "../../../API/Issues";
 
 const Issues = props => {
@@ -33,6 +34,8 @@ const Issues = props => {
 	const [working, setworking] = useState(false);
 	const [showIssueEditor, setshowIssueEditor] = useState(false);
 	const [issueToEdit, setissueToEdit] = useState(null);
+	const [issueNameToEdit, setissueNameToEdit] = useState("");
+	const [issueDescToEdit, setissueDescToEdit] = useState("");
 
 	const fetchIssues = () => {
 		setloading(true);
@@ -86,7 +89,15 @@ const Issues = props => {
 	const toggleCategoryModal = () => setshowCategoryModal(show => !show);
 	const toggleIssueEditor = index => {
 		setshowIssueEditor(show => !show);
-		setissueToEdit(sortByCategory(activeCategory)[index]);
+		setissueToEdit(() => {
+			let issue =
+				index >= 0 && !isNaN(index)
+					? sortByCategory(activeCategory)[index]
+					: null;
+			setissueNameToEdit(issue ? issue.name : "");
+			setissueDescToEdit(issue ? issue.desc : "");
+			return issue;
+		});
 	};
 
 	const issueCreator = e => {
@@ -220,6 +231,31 @@ const Issues = props => {
 		}
 	};
 
+	const updateIssue = event => {
+		event.preventDefault();
+		if (!issueNameToEdit || !issueDescToEdit || !issueToEdit)
+			return toasts.generateError("Empty Inputs.");
+
+		setworking(true);
+
+		let payLoad = {
+			newName: issueNameToEdit,
+			newDesc: issueDescToEdit
+		};
+
+		issueUpdater(payLoad, issueToEdit._id, err => {
+			toasts.generateError(err);
+			setworking(false);
+		}).then(res => {
+			if (res && res.data && res.status === 200) {
+				toasts.generateSuccess(res.data.message);
+				setworking(false);
+				toggleIssueEditor(null);
+				fetchIssues();
+			}
+		});
+	};
+
 	return (
 		<IssuesUI
 			isAdmin={state.isAdmin}
@@ -257,6 +293,13 @@ const Issues = props => {
 			deleteIssue={deleteIssue}
 			// Editing Issue
 			toggleIssueEditor={toggleIssueEditor}
+			showIssueEditor={showIssueEditor}
+			issueToEdit={issueToEdit}
+			issueNameToEdit={issueNameToEdit}
+			setissueNameToEdit={setissueNameToEdit}
+			issueDescToEdit={issueDescToEdit}
+			setissueDescToEdit={setissueDescToEdit}
+			updateIssue={updateIssue}
 		/>
 	);
 };

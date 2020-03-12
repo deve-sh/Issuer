@@ -99,6 +99,64 @@ const IssuesUI = props => {
 			) : (
 				""
 			)}
+			{props.showIssueEditor &&
+			!props.isAdmin &&
+			!props.isHead &&
+			props.issueToEdit ? (
+				<Modal
+					heading={issuesConstants.EDITISSUE}
+					toggleModal={props.toggleIssueEditor}
+				>
+					<form onSubmit={props.updateIssue}>
+						<label>Issue Name :</label>
+						<Input
+							type={"text"}
+							placeholder={"New Issue Name"}
+							required={true}
+							className={"form-control"}
+							value={props.issueNameToEdit}
+							disabled={props.working}
+							onChange={e =>
+								props.setissueNameToEdit(e.target.value)
+							}
+						/>
+						<br />
+						<label>Issue Desc :</label>
+						<textarea
+							placeholder={"New Issue Desc"}
+							required={true}
+							className={"form-control"}
+							value={props.issueDescToEdit}
+							disabled={props.working}
+							onChange={e =>
+								props.setissueDescToEdit(e.target.value)
+							}
+						/>
+						<br />
+						<Button
+							className={"btn btn-success"}
+							label={"Submit"}
+							title={issuesConstants.EDITISSUE}
+							type={"submit"}
+							disabled={props.working}
+						/>
+						&nbsp;&nbsp;
+						<a
+							href={"#"}
+							className={"btn accessibility"}
+							disabled={props.working}
+							onClick={e => {
+								e.preventDefault();
+								props.toggleIssueEditor();
+							}}
+						>
+							Cancel
+						</a>
+					</form>
+				</Modal>
+			) : (
+				""
+			)}
 			{props.showCategoryModal &&
 			(props.isAdmin || props.isHead) &&
 			props.isApproved ? (
@@ -269,7 +327,11 @@ const IssuesUI = props => {
 												<Button
 													className={"accessibility"}
 													title={"Edit Issue"}
-													onClick={() => props.toggleIssueEditor(index)}
+													onClick={() =>
+														props.toggleIssueEditor(
+															index
+														)
+													}
 												>
 													<Icon
 														className={

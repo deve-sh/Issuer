@@ -236,7 +236,7 @@ module.exports = router => {
 		(req, res) => {
 			let { authorization } = req.headers;
 			let { issueId } = req.params;
-			let { newName, newDesc, newCategory } = req.headers;
+			let { newName, newDesc, newCategory } = req.body;
 
 			if (!authorization) return UNAUTHORISED(res);
 			else if (!newName && !newDesc && !newCategory)
@@ -254,7 +254,21 @@ module.exports = router => {
 
 			if (hasError) return INVALIDTOKEN(res); // Illegal Token.
 
-			return findIssueById(issueId, (err, issue) => {});
+			return findIssueById(issueId, (err, issue) => {
+				if (err || !issue) return INTERNALSERVERERROR(res);
+
+				if (user._id !== issue.creator.toString())
+					return UNAUTHORISED(res);
+
+				if (newName) issue.name = newName;
+				if (newDesc) issue.desc = newDesc;
+				if (newCategory) issue.category = newCategory;
+
+				return issue.save(err => {
+					if (err) return INTERNALSERVERERROR(res);
+					return message(res, 200, "Updated Issue Successfully.");
+				});
+			});
 		}
 	);
 

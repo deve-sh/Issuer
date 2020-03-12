@@ -66,13 +66,15 @@ export const createIssue = (payLoad, errorCallback) => {
 		.catch(err => errorCallback(getError(err)));
 };
 
-export const updateIssue = (payLoad, errorCallback) => {
+export const issueUpdater = (payLoad, issueId, errorCallback) => {
 	const endpoint =
 		config.HTTPS +
 		config.BACKEND +
 		config.API +
 		issueConfig.ISSUEROUTE +
-		issueConfig.UPDATEISSUE;
+		issueConfig.UPDATEISSUE +
+		issueId +
+		"/";
 
 	return axios
 		.patch(endpoint, payLoad, getAuthToken())
