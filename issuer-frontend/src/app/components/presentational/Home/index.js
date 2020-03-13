@@ -7,8 +7,8 @@ import Button from "../../reusables/Button";
 import Image from "../../reusables/Image";
 
 // Images and Assets
-import RemotelyImage from "../../../files/remotely.svg";
-import FolderImage from "../../../files/folder.svg";
+import SupportImage from "../../../files/support.svg";
+import StatsImage from "../../../files/stats.svg";
 
 const HomeUI = props => {
 	// Refraining from using Constants for text because not required.
@@ -18,7 +18,7 @@ const HomeUI = props => {
 			<section className={"homepage-front"}>
 				<div className={"fixedcontainer aligncenter row"}>
 					<div className={"col-md-5 paddingcol imagecolumn"}>
-						<Image className={"resimage"} src={RemotelyImage} />
+						<Image className={"resimage"} src={SupportImage} />
 					</div>
 					<div className={"col-md-7 paddingcol"}>
 						<div className={"heading extraweight"}>
@@ -81,7 +81,7 @@ const HomeUI = props => {
 						</p>
 					</div>
 					<div className={"col-md-5 paddingcol imagecolumn"}>
-						<Image className={"resimage"} src={FolderImage} />
+						<Image className={"resimage"} src={StatsImage} />
 					</div>
 				</div>
 			</section>
