@@ -37,6 +37,11 @@ const Issues = props => {
 	const [issueNameToEdit, setissueNameToEdit] = useState("");
 	const [issueDescToEdit, setissueDescToEdit] = useState("");
 
+	// Main Issue modal
+	const [showIssue, setshowIssue] = useState(false);
+	const [activeIssue, setactiveIssue] = useState(null);
+	const [issueRes, setissueRes] = useState("");
+
 	const fetchIssues = () => {
 		setloading(true);
 		getIssues(true, err => {
@@ -98,6 +103,10 @@ const Issues = props => {
 			setissueDescToEdit(issue ? issue.desc : "");
 			return issue;
 		});
+	};
+	const toggleIssue = issue => {
+		setshowIssue(show => !show);
+		setactiveIssue(issue ? issue : null);
 	};
 
 	const issueCreator = e => {
@@ -256,6 +265,10 @@ const Issues = props => {
 		});
 	};
 
+	const resolveIssue = (event) => {
+		event.preventDefault();
+	}
+
 	return (
 		<IssuesUI
 			isAdmin={state.isAdmin}
@@ -300,6 +313,13 @@ const Issues = props => {
 			issueDescToEdit={issueDescToEdit}
 			setissueDescToEdit={setissueDescToEdit}
 			updateIssue={updateIssue}
+			// Main Issue modal
+			showIssue={showIssue}
+			activeIssue={activeIssue}
+			toggleIssue={toggleIssue}
+			issueRes={issueRes}
+			setissueRes={setissueRes}
+			resolveIssue={resolveIssue}
 		/>
 	);
 };

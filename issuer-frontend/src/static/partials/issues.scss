@@ -80,23 +80,75 @@
 
 			&-info{
 				&-heading{
-					font-size: 1.25rem;
+					font-size: 1.175rem;
 					font-weight: 500;
 					padding: 0 0 0.35rem 0;
+					letter-spacing: 0.02rem;
+					text-transform: uppercase;
 				}
 
 				&-desc{
 					margin-bottom: 0.35rem;
+					font-size: 0.875rem;
 				}
 
 				&-createdat{
-					color: #555555;
+					color: $timegrey;
 					font-size: 0.75rem;
+				}
+
+				&-category{
+					margin-bottom: 0.25rem;
+					font-size: 0.875rem;
+
+					&-name{
+						font-weight: 500;
+						letter-spacing: 0.05rem;
+					}
 				}
 			}
 
 			&-options{
 
+			}
+
+			&modal{
+				&-category{
+					font-weight: 500;
+					font-size: 0.875rem;
+				}
+
+				&-desc{
+					padding: 0.75rem 0;
+				}
+
+				&-extradesc{
+					padding-bottom: 0.75rem;
+					font-size: 0.825rem;
+
+					.extradesc{
+						font-weight: 500;
+					}
+				}
+
+				&-resform{
+					padding: 0.75rem 0 0 0;
+
+					textarea.form-control{
+						min-height: 25vh;
+						max-height: 45vh;
+					}
+				}
+
+				&-createdat{
+					font-size: 0.75rem;
+					color: $timegrey;
+					font-weight: 500;
+				}
+
+				.buttoncontainer{
+					padding: 0.625rem 0 0 0;
+				}
 			}
 		}
 	}

@@ -13,6 +13,100 @@ import issuesConstants from "../../../constants/issuesConstants";
 const IssuesUI = props => {
 	return (
 		<div className={"issues-container"}>
+			{// Main issue modal.
+			props.showIssue && props.activeIssue ? (
+				<Modal
+					className={"lengthymodal"}
+					heading={
+						props.activeIssue.name
+							? props.activeIssue.name
+							: "Issue"
+					}
+					toggleModal={props.toggleIssue}
+				>
+					<div className={"issuemodal"}>
+						<div className={"issuemodal-category"}>
+							{props.activeIssue.category}
+						</div>
+						<div className={"issuemodal-desc"}>
+							<div
+								className={"desc"}
+								dangerouslySetInnerHTML={{
+									__html: props.activeIssue.desc
+										? props.activeIssue.desc.replace(
+												/\n/g,
+												"<br/>"
+										  )
+										: ""
+								}}
+							/>
+						</div>
+						{props.activeIssue.extraDetails ? (
+							<div className={"issuemodal-extradesc"}>
+								<span className={"extradesc"}>
+									Extra Details
+								</span>
+								{": "}
+								<div
+									className={"desc"}
+									dangerouslySetInnerHTML={{
+										__html: props.activeIssue.extraDetails
+											? props.activeIssue.extraDetails.replace(
+													/\n/g,
+													"<br/>"
+											  )
+											: ""
+									}}
+								/>
+							</div>
+						) : (
+							""
+						)}
+						<div className={"issuemodal-createdat"}>
+							<Icon className={"fas fa-clock"} />
+							&nbsp;&nbsp;
+							{new Date(
+								props.activeIssue.createdOn
+							).toDateString() +
+								" - " +
+								new Date(
+									props.activeIssue.createdOn
+								).toLocaleTimeString()}
+						</div>
+						<form
+							className={"issuemodal-resform"}
+							onSubmit={props.resolveIssue}
+						>
+							<textarea
+								className={"form-control"}
+								placeholder={"Resolution Of Issue"}
+								required={true}
+							/>
+							<div className={"buttoncontainer"}>
+								<Button
+									className={"btn btn-success"}
+									label={"Resolve"}
+									type={"submit"}
+									title={"Resolve"}
+								/>
+								&nbsp;&nbsp;
+								<a
+									href={"#"}
+									className={"btn accessibility"}
+									onClick={e => {
+										e.preventDefault();
+										props.toggleIssue(null);
+									}}
+								>
+									Cancel
+								</a>
+							</div>
+						</form>
+					</div>
+				</Modal>
+			) : (
+				""
+			)}
 			{!props.isAdmin &&
 			!props.isHead &&
 			props.isApproved &&
@@ -300,6 +394,9 @@ const IssuesUI = props => {
 											className={
 												"accessibility issue-info-heading"
 											}
+											onClick={() =>
+												props.toggleIssue(issue)
+											}
 											label={issue.name}
 										/>
 										<div className={"issue-info-desc"}>
@@ -307,6 +404,15 @@ const IssuesUI = props => {
 												? issue.desc.slice(0, 99) +
 												  " ..."
 												: issue.desc}
+										</div>
+										<div className={"issue-info-category"}>
+											<span
+												className={
+													"issue-info-category-name"
+												}
+											>
+												{issue.category}
+											</span>
 										</div>
 										<div className={"issue-info-createdat"}>
 											<Icon className={"fas fa-clock"} />
