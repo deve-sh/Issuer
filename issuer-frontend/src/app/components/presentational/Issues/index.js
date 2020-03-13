@@ -77,30 +77,37 @@ const IssuesUI = props => {
 							className={"issuemodal-resform"}
 							onSubmit={props.resolveIssue}
 						>
-							<textarea
-								className={"form-control"}
-								placeholder={"Resolution Of Issue"}
-								required={true}
-							/>
-							<div className={"buttoncontainer"}>
-								<Button
-									className={"btn btn-success"}
-									label={"Resolve"}
-									type={"submit"}
-									title={"Resolve"}
-								/>
-								&nbsp;&nbsp;
-								<a
-									href={"#"}
-									className={"btn accessibility"}
-									onClick={e => {
-										e.preventDefault();
-										props.toggleIssue(null);
-									}}
-								>
-									Cancel
-								</a>
-							</div>
+							<label className={"res-label"}>Resolution:</label>
+							{!props.activeIssue.isResolved ? (
+								<React.Fragment>
+									<textarea
+										className={"form-control"}
+										placeholder={"Resolution Of Issue"}
+										required={true}
+									/>
+									<div className={"buttoncontainer"}>
+										<Button
+											className={"btn btn-success"}
+											label={"Resolve"}
+											type={"submit"}
+											title={"Resolve"}
+										/>
+										&nbsp;&nbsp;
+										<a
+											href={"#"}
+											className={"btn accessibility"}
+											onClick={e => {
+												e.preventDefault();
+												props.toggleIssue(null);
+											}}
+										>
+											Cancel
+										</a>
+									</div>
+								</React.Fragment>
+							) : (
+								<React.Fragment></React.Fragment>
+							)}
 						</form>
 					</div>
 				</Modal>

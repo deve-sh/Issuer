@@ -4,7 +4,7 @@ const instituteConstants = require("../../constants/instituteConstants");
 const issueConstants = require("../../constants/issueConstants");
 const { message } = require("../../constants");
 
-const { Issue, Category } = require("../../model");
+const { Issue, Category, Resolution } = require("../../model");
 
 const {
 	error,
@@ -325,6 +325,71 @@ module.exports = router => {
 							);
 					});
 				}
+			});
+		}
+	);
+
+	router.post(
+		`${apiConstants.ISSUEROUTES}${apiConstants.RESOLVEISSUE}/:issueId/`,
+		(req, res) => {
+			let { authorization } = req.headers;
+			let { resolution } = req.body;
+
+			if (!authorization) return UNAUTHORISED(res);
+			else if (!resolution) return INCOMPLETEDETAILS(res);
+
+			let user = null,
+				hasError = false;
+
+			verifyToken(authorization, (err, decoded) => {
+				if (err) hasError = true;
+				else user = { ...decoded };
+			});
+
+			return findUserById(user._id, (err, fetchedUser) => {
+				if (err) return INTERNALSERVERERROR(res);
+				else if (!fetchedUser)
+					return error(res, 404, "User not found!");
+
+				if (
+					(!fetchedUser.isAdmin && !fetchedUser.isHead) ||
+					!fetchedUser.isApproved
+				)
+					return UNAUTHORISED(res);
+
+				return findIssueById(issueId, (err, issue) => {
+					if (err) return INTERNALSERVERERROR(res);
+					else if (!issue) return error(res, 404, "Issue Not found!");
+					else if (
+						issue.institute.toString() !==
+							fetchedUser.institute.toString() ||
+						issue.department.toString() !==
+							fetchedUser.department.toString()
+					)
+						return UNAUTHORISED(res);
+
+					if (issue.isResolved)
+						return error(res, 400, "Issue already resolved.");
+
+					let newRes = new Resolution({
+						resolution: resolution,
+						resolvedBy: fetchedUser._id,
+						issue: issueId,
+						createdOn: new Date().getTime()
+					});
+
+					return newRes.save(err => {
+						if(err) return INTERNALSERVERERROR(res);
+
+						issue.isResolved = true;
+
+						return issue.save(err => {
+							if(err) return error(res, 500, "Issue resolved but could not be saved. Kindly refresh.");
+
+							return res.status(201).json(resolution);
+						})
+					});
+				});
 			});
 		}
 	);
