@@ -1,5 +1,5 @@
 const constants = require("../constants");
-const { User, Institute, Issue, Category } = require("../model");
+const { User, Institute, Issue, Category, Resolution } = require("../model");
 
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
@@ -92,5 +92,10 @@ module.exports = {
 	},
 	findIssueById: (issueId, callback) => {
 		Issue.findById(issueId, (err, issue) => callback(err, issue));
+	},
+	findResolutionByIssue: (issueId, callback) => {
+		Resolution.find({ issue: issueId }, (err, resolution) =>
+			callback(err, resolution)
+		);
 	}
 };

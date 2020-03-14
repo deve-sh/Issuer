@@ -5,7 +5,9 @@ const issueConfig = {
 	ADDCATEGORY: "/addcategory/",
 	CREATEISSUE: "/createissue/",
 	UPDATEISSUE: "/updateissue/",
-	DELETEISSUE: "/deleteissue/"
+	DELETEISSUE: "/deleteissue/",
+	RESOLVEISSUE: "/resolveissue/",
+	GETRESOLUTION: "/getresolution/"
 };
 
 export default issueConfig;

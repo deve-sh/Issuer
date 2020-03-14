@@ -97,3 +97,35 @@ export const issueDeleter = (issueId, errorCallback) => {
 		.then(res => res)
 		.catch(err => errorCallback(getError(err)));
 };
+
+export const issueResolver = (resolution, issueId, errorCallback) => {
+	const endpoint =
+		config.HTTPS +
+		config.BACKEND +
+		config.API +
+		issueConfig.ISSUEROUTE +
+		issueConfig.RESOLVEISSUE +
+		issueId +
+		"/";
+
+	return axios
+		.post(endpoint, { resolution }, getAuthToken())
+		.then(res => res)
+		.catch(err => errorCallback(getError(err)));
+};
+
+export const resolutionFetcher = (issueId, errorCallback) => {
+	const endpoint =
+		config.HTTPS +
+		config.BACKEND +
+		config.API +
+		issueConfig.ISSUEROUTE +
+		issueConfig.GETRESOLUTION +
+		issueId +
+		"/";
+
+	return axios
+		.get(endpoint, getAuthToken())
+		.then(res => res)
+		.catch(err => errorCallback(getError(err)));
+};

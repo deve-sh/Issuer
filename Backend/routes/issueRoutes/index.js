@@ -19,7 +19,8 @@ const {
 	findIssuesByDepartment,
 	findIssuesByUser,
 	findCategories,
-	findIssueById
+	findIssueById,
+	findResolutionByIssue
 } = require("../../helpers");
 
 module.exports = router => {
@@ -334,6 +335,7 @@ module.exports = router => {
 		(req, res) => {
 			let { authorization } = req.headers;
 			let { resolution } = req.body;
+			let { issueId } = req.params;
 
 			if (!authorization) return UNAUTHORISED(res);
 			else if (!resolution) return INCOMPLETEDETAILS(res);
@@ -345,6 +347,8 @@ module.exports = router => {
 				if (err) hasError = true;
 				else user = { ...decoded };
 			});
+
+			if (hasError || !user) return INVALIDTOKEN(res);
 
 			return findUserById(user._id, (err, fetchedUser) => {
 				if (err) return INTERNALSERVERERROR(res);
@@ -379,17 +383,48 @@ module.exports = router => {
 					});
 
 					return newRes.save(err => {
-						if(err) return INTERNALSERVERERROR(res);
+						if (err) return INTERNALSERVERERROR(res);
 
 						issue.isResolved = true;
 
 						return issue.save(err => {
-							if(err) return error(res, 500, "Issue resolved but could not be saved. Kindly refresh.");
+							if (err)
+								return error(
+									res,
+									500,
+									"Issue resolved but could not be saved. Kindly refresh."
+								);
 
 							return res.status(201).json(resolution);
-						})
+						});
 					});
 				});
+			});
+		}
+	);
+
+	router.get(
+		`${apiConstants.ISSUEROUTES}${apiConstants.GETRESOLUTION}/:issueId/`,
+		(req, res) => {
+			let { authorization } = req.headers;
+			let { issueId } = req.params;
+
+			if (!authorization) return UNAUTHORISED(res);
+			else if (!issueId) return INCOMPLETEDETAILS(res);
+
+			let user = null,
+				hasError = false;
+
+			verifyToken(authorization, (err, decoded) => {
+				if (err) hasError = true;
+				else user = { ...decoded };
+			});
+
+			if (hasError || !user) return INVALIDTOKEN(res);
+
+			return findResolutionByIssue(issueId, (err, resolution) => {
+				if (err) return INTERNALSERVERERROR(res);
+				return res.json(resolution);
 			});
 		}
 	);

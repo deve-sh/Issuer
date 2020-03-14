@@ -12,7 +12,9 @@ import {
 	addCategory,
 	createIssue,
 	issueDeleter,
-	issueUpdater
+	issueUpdater,
+	issueResolver,
+	resolutionFetcher
 } from "../../../API/Issues";
 
 const Issues = props => {
@@ -41,6 +43,7 @@ const Issues = props => {
 	const [showIssue, setshowIssue] = useState(false);
 	const [activeIssue, setactiveIssue] = useState(null);
 	const [issueRes, setissueRes] = useState("");
+	const [activeIssueRes, setactiveIssueRes] = useState("");
 
 	const fetchIssues = () => {
 		setloading(true);
@@ -90,6 +93,20 @@ const Issues = props => {
 		setactivePane(newActivePane);
 	};
 
+	const fetchResolution = issueId => {
+		setworking(true);
+		resolutionFetcher(issueId, err => {
+			toasts.generateError(err);
+			setworking(false);
+		})
+			.then(res => {
+				if (res && res.data && res.status === 200) {
+					setactiveIssueRes(res.data);
+				}
+			})
+			.then(() => setworking(false));
+	};
+
 	const toggleIssueModal = () => setshowIssueModal(show => !show);
 	const toggleCategoryModal = () => setshowCategoryModal(show => !show);
 	const toggleIssueEditor = index => {
@@ -107,6 +124,7 @@ const Issues = props => {
 	const toggleIssue = issue => {
 		setshowIssue(show => !show);
 		setactiveIssue(issue ? issue : null);
+		if (issue) fetchResolution(issue ? issue._id : null);
 	};
 
 	const issueCreator = e => {
@@ -265,9 +283,26 @@ const Issues = props => {
 		});
 	};
 
-	const resolveIssue = (event) => {
+	const resolveIssue = event => {
 		event.preventDefault();
-	}
+
+		if (!issueRes) return toasts.generateError("Empty Resolution.");
+		setworking(true);
+
+		issueResolver(issueRes, activeIssue._id, err => {
+			toasts.generateError(err);
+			setworking(false);
+		})
+			.then(res => {
+				if (res && res.data && res.status === 201) {
+					toasts.generateSuccess("Added Issue Resolution.");
+					toggleIssue(null);
+					setissueRes("");
+					fetchIssues();
+				}
+			})
+			.then(() => setworking(false));
+	};
 
 	return (
 		<IssuesUI

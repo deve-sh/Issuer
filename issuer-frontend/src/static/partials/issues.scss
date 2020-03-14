@@ -95,6 +95,7 @@
 				&-createdat{
 					color: $timegrey;
 					font-size: 0.75rem;
+					font-weight: 500;
 				}
 
 				&-category{
@@ -142,6 +143,11 @@
 					textarea.form-control{
 						min-height: 25vh;
 						max-height: 45vh;
+					}
+
+					.aligncenter{
+						display: flex;
+						justify-content: center;
 					}
 				}
 

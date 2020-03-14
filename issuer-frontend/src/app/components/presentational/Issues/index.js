@@ -73,42 +73,62 @@ const IssuesUI = props => {
 									props.activeIssue.createdOn
 								).toLocaleTimeString()}
 						</div>
-						<form
-							className={"issuemodal-resform"}
-							onSubmit={props.resolveIssue}
-						>
+						<div className={"issuemodal-resform"}>
 							<label className={"res-label"}>Resolution:</label>
-							{!props.activeIssue.isResolved ? (
-								<React.Fragment>
-									<textarea
-										className={"form-control"}
-										placeholder={"Resolution Of Issue"}
-										required={true}
-									/>
-									<div className={"buttoncontainer"}>
-										<Button
-											className={"btn btn-success"}
-											label={"Resolve"}
-											type={"submit"}
-											title={"Resolve"}
+							{props.working ? (
+								<Loader />
+							) : !props.activeIssue.isResolved &&
+							  !props.activeIssueRes ? (
+								props.isAdmin || props.isHead ? (
+									<form onSubmit={props.resolveIssue}>
+										<textarea
+											className={"form-control"}
+											placeholder={"Resolution Of Issue"}
+											required={true}
+											value={props.issueRes}
+											onChange={e =>
+												props.setissueRes(
+													e.target.value
+												)
+											}
 										/>
-										&nbsp;&nbsp;
-										<a
-											href={"#"}
-											className={"btn accessibility"}
-											onClick={e => {
-												e.preventDefault();
-												props.toggleIssue(null);
-											}}
-										>
-											Cancel
-										</a>
+										<div className={"buttoncontainer"}>
+											<Button
+												className={"btn btn-success"}
+												label={"Resolve"}
+												type={"submit"}
+												title={"Resolve"}
+											/>
+											&nbsp;&nbsp;
+											<a
+												href={"#"}
+												className={"btn accessibility"}
+												onClick={e => {
+													e.preventDefault();
+													props.toggleIssue(null);
+												}}
+											>
+												Cancel
+											</a>
+										</div>
+									</form>
+								) : (
+									<div className={"aligncenter"}>
+										Resolution Not Provided Yet.
 									</div>
-								</React.Fragment>
+								)
 							) : (
-								<React.Fragment></React.Fragment>
+								<div
+									className={"resolution"}
+									dangerouslySetInnerHTML={{
+										__html: props.activeIssueRes.replace(
+											/\n/g,
+											"<br/>"
+										)
+									}}
+								/>
 							)}
-						</form>
+						</div>
 					</div>
 				</Modal>
 			) : (

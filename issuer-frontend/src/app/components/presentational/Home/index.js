@@ -40,12 +40,6 @@ const HomeUI = props => {
 							mattis, justo urna elementum velit, non pretium diam
 							risus at dolor. In a vestibulum erat.
 						</p>
-						<p>
-							<Button
-								className={"btn btn cta decorative"}
-								label={homeConstants.CHECKITOUT}
-							/>
-						</p>
 					</div>
 				</div>
 			</section>
