@@ -121,10 +121,12 @@ const IssuesUI = props => {
 								<div
 									className={"resolution"}
 									dangerouslySetInnerHTML={{
-										__html: props.activeIssueRes.replace(
-											/\n/g,
-											"<br/>"
-										)
+										__html: props.activeIssueRes.resolution
+											? props.activeIssueRes.resolution.replace(
+													/\n/g,
+													"<br/>"
+											  )
+											: ""
 									}}
 								/>
 							)}

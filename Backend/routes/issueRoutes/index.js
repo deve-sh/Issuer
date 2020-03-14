@@ -424,7 +424,7 @@ module.exports = router => {
 
 			return findResolutionByIssue(issueId, (err, resolution) => {
 				if (err) return INTERNALSERVERERROR(res);
-				return res.json(resolution);
+				return res.json(resolution.length > 0 ? resolution[0] : null);
 			});
 		}
 	);

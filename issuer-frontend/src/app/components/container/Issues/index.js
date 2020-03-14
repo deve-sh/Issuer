@@ -355,6 +355,7 @@ const Issues = props => {
 			issueRes={issueRes}
 			setissueRes={setissueRes}
 			resolveIssue={resolveIssue}
+			activeIssueRes={activeIssueRes}
 		/>
 	);
 };
