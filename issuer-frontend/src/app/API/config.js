@@ -1,6 +1,6 @@
 const config = {
-  HTTPS: "http://",
-  BACKEND: "localhost:5000",
+  HTTPS: "https://",
+  BACKEND: "issuerfc.herokuapp.com",
   API: "/api",
   CONNECTIONERROR: "Error Connecting!"
 };
