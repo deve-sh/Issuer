@@ -77,7 +77,7 @@ const IssuesUI = props => {
 							<label className={"res-label"}>Resolution:</label>
 							{props.working ? (
 								<Loader />
-							) : !props.activeIssue.isResolved &&
+							) : !props.activeIssue.isResolved ||
 							  !props.activeIssueRes ? (
 								props.isAdmin || props.isHead ? (
 									<form onSubmit={props.resolveIssue}>
@@ -113,22 +113,41 @@ const IssuesUI = props => {
 										</div>
 									</form>
 								) : (
-									<div className={"aligncenter"}>
+									<div className={"resolution aligncenter"}>
 										Resolution Not Provided Yet.
 									</div>
 								)
 							) : (
-								<div
-									className={"resolution"}
-									dangerouslySetInnerHTML={{
-										__html: props.activeIssueRes.resolution
-											? props.activeIssueRes.resolution.replace(
-													/\n/g,
-													"<br/>"
-											  )
-											: ""
-									}}
-								/>
+								<React.Fragment>
+									<div
+										className={"resolution"}
+										dangerouslySetInnerHTML={{
+											__html: props.activeIssueRes
+												.resolution
+												? props.activeIssueRes.resolution.replace(
+														/\n/g,
+														"<br/>"
+												  )
+												: ""
+										}}
+									/>
+									<div className={"resolution-time"}>
+										<Icon className={"fas fa-clock"} />
+										&nbsp;
+										{new Date(
+											props.activeIssueRes.createdOn
+												? props.activeIssueRes.createdOn
+												: ""
+										).toDateString() +
+											" - " +
+											new Date(
+												props.activeIssueRes.createdOn
+													? props.activeIssueRes
+															.createdOn
+													: ""
+											).toLocaleTimeString()}
+									</div>
+								</React.Fragment>
 							)}
 						</div>
 					</div>

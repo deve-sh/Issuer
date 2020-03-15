@@ -149,6 +149,21 @@
 						display: flex;
 						justify-content: center;
 					}
+
+					.resolution{
+						background: $lightgrey;
+						color: $dotgrey;
+						padding: 0.75rem;
+						border-radius: 0.25rem;
+						border: 0.1rem dashed $dotgrey;
+
+						&-time{
+							padding-top: 0.35rem;
+							color: $dotgrey;
+							font-size: 0.8rem;
+							font-weight: 600;
+						}
+					}
 				}
 
 				&-createdat{
