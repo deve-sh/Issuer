@@ -447,6 +447,9 @@ const IssuesUI = props => {
 											}
 											label={issue.name}
 										/>
+										<div className={"issue-info-createdby"}>
+											By {issue.creatorName}
+										</div>
 										<div className={"issue-info-desc"}>
 											{issue.desc.length > 100
 												? issue.desc.slice(0, 99) +

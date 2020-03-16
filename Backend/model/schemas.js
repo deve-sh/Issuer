@@ -67,6 +67,8 @@ module.exports = {
 			required: true,
 			default: "Others"
 		},
+		creatorName: { type: String, required: true },
+		creatorMail: { type: String, required: true },
 		extraDetails: { type: String, default: "" }
 	}),
 	ResolutionSchema: new Schema({

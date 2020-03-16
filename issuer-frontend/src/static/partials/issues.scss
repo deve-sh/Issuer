@@ -82,9 +82,15 @@
 				&-heading{
 					font-size: 1.175rem;
 					font-weight: 500;
-					padding: 0 0 0.35rem 0;
+					padding: 0;
 					letter-spacing: 0.02rem;
 					text-transform: uppercase;
+				}
+
+				&-createdby{
+					font-size: 0.8rem;
+					font-weight: 500;
+					padding: 0.35rem 0;
 				}
 
 				&-desc{
@@ -100,7 +106,7 @@
 
 				&-category{
 					margin-bottom: 0.25rem;
-					font-size: 0.875rem;
+					font-size: 0.8rem;
 
 					&-name{
 						font-weight: 500;

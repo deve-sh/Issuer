@@ -218,6 +218,8 @@ module.exports = router => {
 					creator: user._id,
 					isResolved: false,
 					createdOn: new Date().getTime(),
+					creatorName: fetchedUser.name,
+					creatorMail: fetchedUser.email,
 					department,
 					institute,
 					extraDetails,
